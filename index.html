@@ -491,7 +491,7 @@ function renderBoard(){
       </div>
       <div class="kanban-cards">
         ${items.map(d=>`
-          <div class="card" onclick="openModal(${d.id})">
+          <div class="card" onclick="openModal('${d.id}')">
             <div class="card-title">${d.desc}</div>
             <div class="card-meta">
               <span class="tag ${AREA_TAGS[d.area]||'tag-bi'}">${d.area}</span>
@@ -512,7 +512,7 @@ function formatDate(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}/${
 
 function openModal(id){
   editingId=id||null;
-  const m=id?demandas.find(d=>d.id===id):null;
+  const m=id?demandas.find(d=>String(d.id)===String(id)):null;
   document.getElementById('modal-title').textContent=id?'Editar demanda':'Nova demanda';
   document.getElementById('f-desc').value=m?m.desc:'';
   document.getElementById('f-cliente-val').value=m?m.cliente:'';
@@ -540,7 +540,7 @@ async function saveDemanda(){
     conclusao:document.getElementById('f-conclusao-val').value,
     obs:document.getElementById('f-obs-val').value.trim(),
   };
-  if(editingId){demandas=demandas.map(x=>x.id===editingId?d:x);}
+  if(editingId){demandas=demandas.map(x=>String(x.id)===String(editingId)?d:x);}
   else{demandas.unshift(d);}
   save();
   if(window._fbReady) await window._fbSave(d);
@@ -550,7 +550,7 @@ async function saveDemanda(){
 async function deleteDemanda(){
   if(!editingId)return;
   if(window._fbReady) await window._fbDelete(editingId);
-  demandas=demandas.filter(d=>d.id!==editingId);
+  demandas=demandas.filter(d=>String(d.id)!==String(editingId));
   save();closeModal();renderBoard();showNotice('Demanda removida.');
 }
 
