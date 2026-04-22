@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Copi Gestão — Painel de Projetos</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --preto:#0E3A5C;
+  --laranja:#E8892A;
+  --laranja-light:#FFF3E6;
+  --laranja-dark:#C4711A;
+  --branco:#ffffff;
+  --cinza-bg:#F4F3F0;
+  --cinza-card:#FFFFFF;
+  --cinza-border:#E2E0DB;
+  --cinza-text:#6B6860;
+  --cinza-light:#F9F8F6;
+  --verde:#2E9E6B;
+  --verde-light:#E6F5EE;
+  --vermelho:#C0392B;
+  --vermelho-light:#FDECEA;
+  --azul:#1A6FC4;
+  --azul-light:#E6F0FB;
+  --amarelo:#C4971A;
+  --amarelo-light:#FDF6E6;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cinza-bg);color:var(--preto);min-height:100vh;}
+h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
+
+/* TOPBAR */
+.topbar{background:var(--preto);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
+.logo-area{display:flex;align-items:center;gap:12px;}
+.logo-img{height:28px;filter:brightness(0) invert(1);}
+.logo-divider{width:1px;height:20px;background:rgba(255,255,255,0.2);}
+.logo-sub{font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;text-transform:uppercase;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.top-date{font-size:12px;color:rgba(255,255,255,0.4);}
+.btn-resumo{background:var(--laranja);color:var(--branco);border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;letter-spacing:0.02em;}
+.btn-resumo:hover{background:var(--laranja-dark);}
+
+/* NAV */
+.nav-bar{background:var(--branco);border-bottom:1px solid var(--cinza-border);padding:0 2rem;display:flex;align-items:center;gap:0;}
+.nav-btn{font-family:'Sora',sans-serif;font-size:13px;font-weight:500;padding:14px 20px;background:transparent;border:none;cursor:pointer;color:var(--cinza-text);border-bottom:2px solid transparent;margin-bottom:-1px;}
+.nav-btn.active{color:var(--laranja);border-bottom-color:var(--laranja);}
+.nav-btn:hover{color:var(--preto);}
+
+/* METRICS */
+.metrics-bar{padding:1.25rem 2rem;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mc{background:var(--branco);border:1px solid var(--cinza-border);border-radius:10px;padding:14px 16px;}
+.mc-label{font-size:11px;color:var(--cinza-text);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;}
+.mc-val{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--preto);}
+.mc-sub{font-size:11px;color:var(--cinza-text);margin-top:2px;}
+.mc-orange .mc-val{color:var(--laranja);}
+.mc-green .mc-val{color:var(--verde);}
+.mc-red .mc-val{color:var(--vermelho);}
+
+/* CONTENT */
+.content{padding:0 2rem 2rem;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* KANBAN */
+.kanban-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.kanban-filters{display:flex;gap:8px;flex-wrap:wrap;}
+.filter-select{font-size:12px;padding:6px 10px;border:1px solid var(--cinza-border);border-radius:8px;background:var(--branco);color:var(--preto);font-family:'DM Sans',sans-serif;cursor:pointer;outline:none;}
+.filter-select:focus{border-color:var(--laranja);}
+.btn-add-demanda{background:var(--preto);color:var(--branco);border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;}
+.btn-add-demanda:hover{background:#333;}
+
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start;}
+.kanban-col{background:var(--cinza-light);border:1px solid var(--cinza-border);border-radius:12px;padding:12px;}
+.col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--cinza-border);}
+.col-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--preto);}
+.col-count{background:var(--cinza-border);color:var(--cinza-text);font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.col-backlog .col-count{background:#E2E0DB;color:#6B6860;}
+.col-andamento .col-count{background:#E6F0FB;color:var(--azul);}
+.col-bloqueado .col-count{background:var(--vermelho-light);color:var(--vermelho);}
+.col-concluido .col-count{background:var(--verde-light);color:var(--verde);}
+.col-homologacao .col-count{background:var(--amarelo-light);color:var(--amarelo);}
+
+.kanban-cards{display:flex;flex-direction:column;gap:8px;min-height:60px;}
+.card{background:var(--branco);border:1px solid var(--cinza-border);border-radius:10px;padding:12px;cursor:pointer;transition:box-shadow .15s,transform .1s;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);transform:translateY(-1px);}
+.card-title{font-size:13px;font-weight:500;color:var(--preto);margin-bottom:8px;line-height:1.4;}
+.card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;}
+.tag-bi{background:#E6F0FB;color:var(--azul);}
+.tag-ctrl{background:var(--laranja-light);color:var(--laranja-dark);}
+.tag-tech{background:#F0E6FB;color:#6B1AC4;}
+.tag-figma{background:#FDE6F0;color:#C41A6B;}
+.tag-auto{background:var(--verde-light);color:var(--verde);}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.card-resp{font-size:11px;color:var(--cinza-text);}
+.card-client{font-size:10px;font-weight:600;color:var(--laranja);background:var(--laranja-light);padding:2px 7px;border-radius:20px;}
+.card-date{font-size:10px;color:var(--cinza-text);}
+.card-bloq{font-size:10px;color:var(--vermelho);margin-top:4px;font-style:italic;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--branco);border-radius:16px;padding:1.5rem;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.modal-head h3{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--cinza-text);}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:12px;font-weight:500;color:var(--cinza-text);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.03em;}
+.form-input{width:100%;padding:9px 12px;border:1px solid var(--cinza-border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--branco);color:var(--preto);outline:none;}
+.form-input:focus{border-color:var(--laranja);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-save{width:100%;background:var(--preto);color:var(--branco);border:none;border-radius:10px;padding:12px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;}
+.btn-save:hover{background:var(--laranja);}
+.btn-del{width:100%;background:transparent;color:var(--vermelho);border:1px solid var(--vermelho);border-radius:10px;padding:10px;font-family:'Sora',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px;}
+
+/* CEO VIEW */
+.ceo-view{max-width:760px;margin:0 auto;}
+.ceo-header{text-align:center;padding:2rem 0 1.5rem;}
+.ceo-logo{height:36px;margin-bottom:1rem;}
+.ceo-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--preto);}
+.ceo-subtitle{font-size:14px;color:var(--cinza-text);margin-top:4px;}
+.ceo-week{display:inline-block;background:var(--laranja-light);color:var(--laranja-dark);font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;margin-top:8px;font-family:'Sora',sans-serif;}
+.ceo-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1.5rem 0;}
+.ceo-mc{background:var(--branco);border:1px solid var(--cinza-border);border-radius:12px;padding:16px;text-align:center;}
+.ceo-mc-val{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:var(--preto);}
+.ceo-mc-label{font-size:12px;color:var(--cinza-text);margin-top:4px;}
+.ceo-section{background:var(--branco);border:1px solid var(--cinza-border);border-radius:12px;padding:1.25rem;margin-bottom:12px;}
+.ceo-section-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--verde);}
+.dot-orange{background:var(--laranja);}
+.dot-red{background:var(--vermelho);}
+.dot-blue{background:var(--azul);}
+.ceo-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--cinza-light);}
+.ceo-item:last-child{border-bottom:none;}
+.ceo-item-text{font-size:13px;color:var(--preto);flex:1;line-height:1.5;}
+.ceo-item-client{font-size:11px;font-weight:600;color:var(--laranja);background:var(--laranja-light);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.ceo-item-bloq{font-size:11px;color:var(--vermelho);font-style:italic;}
+.ai-resumo-box{background:var(--preto);border-radius:12px;padding:1.25rem;margin-bottom:12px;}
+.ai-resumo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ai-resumo-head span{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--branco);}
+.ai-badge{font-size:10px;background:var(--laranja);color:var(--branco);padding:3px 8px;border-radius:20px;font-family:'Sora',sans-serif;}
+.ai-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;min-height:48px;}
+.ai-loading{font-style:italic;color:rgba(255,255,255,0.4);}
+.ceo-footer{text-align:center;padding:1.5rem 0;font-size:12px;color:var(--cinza-text);}
+.btn-gerar{background:var(--laranja);color:var(--branco);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;}
+.btn-gerar:hover{background:var(--laranja-dark);}
+
+/* CONFIG */
+.config-section{max-width:500px;padding-top:0.5rem;}
+.config-card{background:var(--branco);border:1px solid var(--cinza-border);border-radius:12px;padding:1.25rem;margin-bottom:14px;}
+.config-card h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;}
+.key-warn{font-size:11px;color:var(--amarelo);background:var(--amarelo-light);border-radius:6px;padding:8px 10px;margin-top:8px;}
+.notice{background:var(--azul-light);border:1px solid #B5D4F4;border-radius:8px;padding:8px 14px;font-size:12px;color:var(--azul);margin:0 2rem 12px;display:none;}
+
+@media(max-width:768px){
+  .kanban-board{grid-template-columns:1fr 1fr;}
+  .metrics-bar{grid-template-columns:repeat(2,1fr);}
+  .ceo-metrics{grid-template-columns:1fr 1fr;}
+  .topbar{padding:0 1rem;}
+  .content,.metrics-bar{padding-left:1rem;padding-right:1rem;}
+}
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAkQD4RUSQRHgwr35GH1ukCjXp4sa7cs14",
+    authDomain: "copi-gestao.firebaseapp.com",
+    projectId: "copi-gestao",
+    storageBucket: "copi-gestao.firebasestorage.app",
+    messagingSenderId: "836972466189",
+    appId: "1:836972466189:web:ac8d33d055e3e8dc964544"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const col = collection(db, "demandas");
+
+  // Expose DB functions globally
+  window._fbSave = async function(d) {
+    try {
+      if(d.id && typeof d.id === 'string' && d.id.startsWith('fb_')) {
+        const docId = d.id.replace('fb_','');
+        await setDoc(doc(db,"demandas",docId), d);
+      } else {
+        const ref = await addDoc(col, d);
+        d.id = 'fb_' + ref.id;
+        await setDoc(doc(db,"demandas",ref.id), d);
+      }
+      return d;
+    } catch(e) { console.error('Firebase save error',e); return null; }
+  };
+
+  window._fbDelete = async function(id) {
+    try {
+      if(id && typeof id === 'string' && id.startsWith('fb_')) {
+        await deleteDoc(doc(db,"demandas", id.replace('fb_','')));
+      }
+    } catch(e) { console.error('Firebase delete error',e); }
+  };
+
+  window._fbListen = function(callback) {
+    return onSnapshot(col, (snapshot) => {
+      const data = [];
+      snapshot.forEach(d => data.push(d.data()));
+      callback(data);
+    });
+  };
+
+  window._fbReady = true;
+  window.dispatchEvent(new Event('firebase-ready'));
+</script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-area">
+    <span class="logo-text" style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.01em;">Copi <span style="color:#E8892A;">Gestão</span></span>
+    <div class="logo-divider"></div>
+    <span class="logo-sub">Painel de Projetos</span>
+  </div>
+  <div class="topbar-right">
+    <span id="fb-status" style="font-size:11px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px;"><span id="fb-dot" style="width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;"></span><span id="fb-label">Conectando...</span></span><span class="top-date" id="top-date"></span>
+    <button class="btn-resumo" onclick="showTab('ceo',document.querySelectorAll('.nav-btn')[1]);gerarResumoCEO()">Resumo CEO ↗</button>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showTab('gestao',this)">Board</button>
+  <button class="nav-btn" onclick="showTab('ceo',this)">Resumo CEO</button>
+  <button class="nav-btn" onclick="showTab('config',this)">⚙ Config</button>
+</div>
+
+<div class="notice" id="notice"></div>
+
+<div class="metrics-bar" id="metrics-bar"></div>
+
+<!-- GESTÃO -->
+<div class="content">
+<div class="section active" id="tab-gestao">
+  <div class="kanban-header">
+    <div class="kanban-filters">
+      <select class="filter-select" id="f-cliente" onchange="renderBoard()">
+        <option value="todos">Todos os clientes</option>
+      </select>
+      <select class="filter-select" id="f-area" onchange="renderBoard()">
+        <option value="todas">Todas as áreas</option>
+        <option value="BI">BI / Dados</option>
+        <option value="Controladoria">Controladoria</option>
+        <option value="Tech">Tecnologia</option>
+        <option value="Figma">Figma / Layout</option>
+        <option value="Automação">Automação</option>
+      </select>
+      <select class="filter-select" id="f-resp" onchange="renderBoard()">
+        <option value="todos">Todos os responsáveis</option>
+        <option value="Leandro">Leandro</option>
+        <option value="Pamella">Pamella</option>
+        <option value="Elisangela">Elisangela</option>
+      </select>
+    </div>
+    <button class="btn-add-demanda" onclick="openModal()">+ Nova demanda</button>
+  </div>
+  <div class="kanban-board" id="kanban-board"></div>
+</div>
+
+<!-- CEO -->
+<div class="section" id="tab-ceo">
+  <div class="ceo-view">
+    <div class="ceo-header">
+      <div style="font-family:Sora,sans-serif;font-size:28px;font-weight:700;color:#0E3A5C;letter-spacing:-0.01em;margin-bottom:0.5rem;">Copi <span style="color:#E8892A;">Gestão</span></div>
+      <div class="ceo-title">Relatório Semanal de Projetos</div>
+      <div class="ceo-subtitle">Tecnologia & BI · Controladoria</div>
+      <div class="ceo-week" id="ceo-week"></div>
+    </div>
+    <div class="ai-resumo-box">
+      <div class="ai-resumo-head">
+        <span>Diagnóstico IA</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="ai-badge">Claude</span>
+          <button class="btn-gerar" onclick="gerarResumoCEO()">Atualizar ↗</button>
+        </div>
+      </div>
+      <div class="ai-text ai-loading" id="ai-resumo">Clique em "Atualizar" para gerar o diagnóstico automático da semana.</div>
+    </div>
+    <div class="ceo-metrics" id="ceo-metrics"></div>
+    <div id="ceo-sections"></div>
+    <div class="ceo-footer">
+      Copi Gestão Empresarial · Head de BI: Leandro Felipe · <span id="ceo-footer-date"></span>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="section" id="tab-config">
+  <div class="config-section">
+    <div class="config-card">
+      <h3>Chave de API — IA</h3>
+      <p style="font-size:12px;color:var(--cinza-text);margin-bottom:10px;line-height:1.6;">Para usar o diagnóstico automático, cole sua chave da Anthropic. Ela fica salva apenas no seu navegador.</p>
+      <div style="display:flex;gap:8px;">
+        <input type="password" id="api-key-input" placeholder="sk-ant-..." class="form-input" style="flex:1;"/>
+        <button class="btn-add-demanda" onclick="saveKey()">Salvar</button>
+      </div>
+      <div class="key-warn" style="margin-top:8px;">Nunca compartilhe sua chave. Ela é salva localmente no seu navegador.</div>
+      <div id="key-status" style="font-size:12px;color:var(--verde);margin-top:6px;"></div>
+    </div>
+    <div class="config-card">
+      <h3>Sobre o painel</h3>
+      <p style="font-size:12px;color:var(--cinza-text);line-height:1.7;">Painel desenvolvido para Copi Gestão Empresarial.<br/>Head de BI: <strong>Leandro Felipe</strong><br/>CEO: <strong>Isabela</strong><br/>Versão 1.0 — Tecnologia & Controladoria</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Nova demanda</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descrição da demanda</label>
+      <input type="text" class="form-input" id="f-desc" placeholder="Ex: Criar dashboard de fluxo de caixa"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Cliente</label>
+        <input type="text" class="form-input" id="f-cliente-val" placeholder="Ex: Sushi, Interno..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Área</label>
+        <select class="form-input" id="f-area-val">
+          <option value="BI">BI / Dados</option>
+          <option value="Controladoria">Controladoria</option>
+          <option value="Tech">Tecnologia</option>
+          <option value="Figma">Figma / Layout</option>
+          <option value="Automação">Automação</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-input" id="f-status-val">
+          <option value="backlog">Backlog</option>
+          <option value="andamento">Em andamento</option>
+          <option value="homologacao">Homologação</option>
+          <option value="bloqueado">Bloqueado</option>
+          <option value="concluido">Concluído</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Responsável</label>
+        <select class="form-input" id="f-resp-val">
+          <option value="Leandro">Leandro</option>
+          <option value="Pamella">Pamella</option>
+          <option value="Elisangela">Elisangela</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Previsão de entrega</label>
+        <input type="date" class="form-input" id="f-prazo-val"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data de conclusão</label>
+        <input type="date" class="form-input" id="f-conclusao-val"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Observação / Bloqueio</label>
+      <input type="text" class="form-input" id="f-obs-val" placeholder="Ex: Aguardando retorno da Elisangela"/>
+    </div>
+    <button class="btn-save" onclick="saveDemanda()">Salvar demanda</button>
+    <button class="btn-del" id="btn-del" style="display:none;" onclick="deleteDemanda()">Remover demanda</button>
+  </div>
+</div>
+
+<script>
+const AREA_TAGS={
+  'BI':'tag-bi','Controladoria':'tag-ctrl','Tech':'tag-tech','Figma':'tag-figma','Automação':'tag-auto'
+};
+const STATUS_COLS={
+  backlog:{label:'Backlog',cls:'col-backlog'},
+  andamento:{label:'Em andamento',cls:'col-andamento'},
+  homologacao:{label:'Homologação',cls:'col-homologacao'},
+  bloqueado:{label:'Bloqueado',cls:'col-bloqueado'},
+  concluido:{label:'Concluído',cls:'col-concluido'},
+};
+const COL_ORDER=['backlog','andamento','homologacao','bloqueado','concluido'];
+
+let demandas=JSON.parse(localStorage.getItem('copi_demandas')||'null')||[
+  {id:1,desc:'Subir base FC abr-jun 2026 — cliente FC',cliente:'FC',area:'BI',status:'concluido',resp:'Leandro',prazo:'2026-04-22',conclusao:'2026-04-22',obs:'Liberado para Pamella em 22/04/2026'},
+  {id:2,desc:'Criar estrutura do fluxo de caixa futuro',cliente:'Sushi',area:'BI',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:3,desc:'Criar modelagem entre as tabelas',cliente:'Sushi',area:'BI',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:4,desc:'Criar medidas do fluxo de caixa',cliente:'Sushi',area:'BI',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:5,desc:'Validar sistemas Saipos e Bling — entrada e saída',cliente:'Sushi',area:'Controladoria',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:6,desc:'Criar parâmetro de saldo inicial',cliente:'Sushi',area:'BI',status:'backlog',resp:'Leandro',prazo:'2026-05-05',conclusao:'',obs:''},
+  {id:7,desc:'Validar estrutura do Saipos',cliente:'Sushi',area:'Tech',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:8,desc:'Validar estrutura do Bling',cliente:'Sushi',area:'Tech',status:'andamento',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:''},
+  {id:9,desc:'Documentar passo a passo DRE Saipos',cliente:'Cavezzo',area:'Controladoria',status:'andamento',resp:'Pamella',prazo:'2026-04-28',conclusao:'',obs:'Delegado para Pamella'},
+  {id:10,desc:'Documentar passo a passo DRE Saipos',cliente:'Chefona',area:'Controladoria',status:'andamento',resp:'Pamella',prazo:'2026-04-28',conclusao:'',obs:'Delegado para Pamella'},
+  {id:11,desc:'Documentar passo a passo Fluxo de Caixa Saipos',cliente:'Chefona',area:'Controladoria',status:'andamento',resp:'Pamella',prazo:'2026-04-28',conclusao:'',obs:'Delegado para Pamella'},
+  {id:12,desc:'Documentar passo a passo Fluxo de Caixa Saipos',cliente:'Cavezzo',area:'Controladoria',status:'andamento',resp:'Pamella',prazo:'2026-04-28',conclusao:'',obs:'Delegado para Pamella'},
+  {id:13,desc:'Aprovar tela de centro de custos',cliente:'H2 Energy',area:'BI',status:'bloqueado',resp:'Leandro',prazo:'2026-04-25',conclusao:'',obs:'Aguardando aprovação da Elisangela'},
+  {id:14,desc:'Modelo Contábil — nova estrutura',cliente:'Interno',area:'Controladoria',status:'concluido',resp:'Leandro',prazo:'2026-04-22',conclusao:'2026-04-22',obs:'Aprovado na nova estrutura'},
+  {id:15,desc:'Automação VTEX vs Cielo',cliente:'Interno',area:'Automação',status:'andamento',resp:'Leandro',prazo:'2026-05-10',conclusao:'',obs:'Funcionando com regras atuais. Falta atualizar regras de negócio'},
+  {id:16,desc:'Validação contábil automática — identificação de erros de classificação',cliente:'Interno',area:'Tech',status:'homologacao',resp:'Leandro',prazo:'2026-04-30',conclusao:'',obs:'Pamella testou. Aguardando decisão para implantação geral'},
+  {id:17,desc:'Migração de dados + criação do banco de dados via VPN',cliente:'Interno',area:'Tech',status:'bloqueado',resp:'Leandro',prazo:'',conclusao:'',obs:'VPN testada sem sucesso. Aguardando nova VPN'},
+  {id:18,desc:'Documentar processo FLC Saipos por cliente',cliente:'Geral',area:'Controladoria',status:'bloqueado',resp:'Pamella',prazo:'2026-05-05',conclusao:'',obs:'Aguardando documentação por cliente (não geral). Pamella orientada.'},
+  {id:19,desc:'Desenvolver validação automática Power BI x Omie',cliente:'Interno',area:'Tech',status:'backlog',resp:'Leandro',prazo:'',conclusao:'',obs:'Ideia de melhoria interna — reduzir tempo de validação do time'},
+];
+let nextId=20;
+let editingId=null;
+
+function save(){localStorage.setItem('copi_demandas',JSON.stringify(demandas));}
+function getKey(){return localStorage.getItem('copi_api_key')||'';}
+function saveKey(){
+  const k=document.getElementById('api-key-input').value.trim();if(!k)return;
+  localStorage.setItem('copi_api_key',k);
+  document.getElementById('key-status').textContent='Chave salva com sucesso ✓';
+  document.getElementById('api-key-input').value='';
+  setTimeout(()=>document.getElementById('key-status').textContent='',3000);
+}
+
+function showNotice(msg){
+  const el=document.getElementById('notice');el.textContent=msg;el.style.display='block';
+  setTimeout(()=>el.style.display='none',4000);
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='ceo'){renderCEO();gerarResumoPadrao();}
+}
+
+function getClientes(){
+  const set=new Set(demandas.map(d=>d.cliente));
+  return [...set].sort();
+}
+
+function updateFilters(){
+  const sel=document.getElementById('f-cliente');
+  const prev=sel.value;
+  sel.innerHTML='<option value="todos">Todos os clientes</option>';
+  getClientes().forEach(c=>sel.innerHTML+=`<option value="${c}">${c}</option>`);
+  if(prev)sel.value=prev;
+}
+
+function updateMetrics(){
+  const total=demandas.length;
+  const concluido=demandas.filter(d=>d.status==='concluido').length;
+  const andamento=demandas.filter(d=>d.status==='andamento').length;
+  const bloqueado=demandas.filter(d=>d.status==='bloqueado').length;
+  const homologacao=demandas.filter(d=>d.status==='homologacao').length;
+  document.getElementById('metrics-bar').innerHTML=`
+    <div class="mc"><div class="mc-label">Total de demandas</div><div class="mc-val">${total}</div><div class="mc-sub">no painel</div></div>
+    <div class="mc mc-green"><div class="mc-label">Concluídas</div><div class="mc-val">${concluido}</div><div class="mc-sub">${total?Math.round(concluido/total*100):0}% do total</div></div>
+    <div class="mc mc-orange"><div class="mc-label">Em andamento</div><div class="mc-val">${andamento}</div><div class="mc-sub">em execução</div></div>
+    <div class="mc mc-red"><div class="mc-label">Bloqueadas</div><div class="mc-val">${bloqueado}</div><div class="mc-sub">precisam de ação</div></div>
+    <div class="mc"><div class="mc-label">Homologação</div><div class="mc-val">${homologacao}</div><div class="mc-sub">aguardando aprovação</div></div>
+  `;
+}
+
+function renderBoard(){
+  updateFilters();updateMetrics();
+  const fc=document.getElementById('f-cliente').value;
+  const fa=document.getElementById('f-area').value;
+  const fr=document.getElementById('f-resp').value;
+  let filtered=demandas.filter(d=>{
+    if(fc!=='todos'&&d.cliente!==fc)return false;
+    if(fa!=='todas'&&d.area!==fa)return false;
+    if(fr!=='todos'&&d.resp!==fr)return false;
+    return true;
+  });
+  const board=document.getElementById('kanban-board');
+  board.innerHTML=COL_ORDER.map(col=>{
+    const items=filtered.filter(d=>d.status===col);
+    const cfg=STATUS_COLS[col];
+    return`<div class="kanban-col ${cfg.cls}">
+      <div class="col-header">
+        <span class="col-title">${cfg.label}</span>
+        <span class="col-count">${items.length}</span>
+      </div>
+      <div class="kanban-cards">
+        ${items.map(d=>`
+          <div class="card" onclick="openModal(${d.id})">
+            <div class="card-title">${d.desc}</div>
+            <div class="card-meta">
+              <span class="tag ${AREA_TAGS[d.area]||'tag-bi'}">${d.area}</span>
+            </div>
+            ${d.obs?`<div class="card-bloq">${d.obs}</div>`:''}
+            <div class="card-footer">
+              <span class="card-resp">${d.resp}</span>
+              <span class="card-client">${d.cliente}</span>
+            </div>
+            ${d.prazo?`<div class="card-date" style="margin-top:6px;font-size:10px;color:var(--cinza-text);">Previsão: ${formatDate(d.prazo)}</div>`:''}
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function formatDate(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`;}
+
+function openModal(id){
+  editingId=id||null;
+  const m=id?demandas.find(d=>d.id===id):null;
+  document.getElementById('modal-title').textContent=id?'Editar demanda':'Nova demanda';
+  document.getElementById('f-desc').value=m?m.desc:'';
+  document.getElementById('f-cliente-val').value=m?m.cliente:'';
+  document.getElementById('f-area-val').value=m?m.area:'BI';
+  document.getElementById('f-status-val').value=m?m.status:'backlog';
+  document.getElementById('f-resp-val').value=m?m.resp:'Leandro';
+  document.getElementById('f-prazo-val').value=m?m.prazo:'';
+  document.getElementById('f-conclusao-val').value=m?m.conclusao:'';
+  document.getElementById('f-obs-val').value=m?m.obs:'';
+  document.getElementById('btn-del').style.display=id?'block':'none';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');editingId=null;}
+
+async function saveDemanda(){
+  const desc=document.getElementById('f-desc').value.trim();if(!desc)return;
+  const d={
+    id:editingId||(Date.now()+'_'+Math.random().toString(36).substr(2,5)),
+    desc,
+    cliente:document.getElementById('f-cliente-val').value.trim()||'Interno',
+    area:document.getElementById('f-area-val').value,
+    status:document.getElementById('f-status-val').value,
+    resp:document.getElementById('f-resp-val').value,
+    prazo:document.getElementById('f-prazo-val').value,
+    conclusao:document.getElementById('f-conclusao-val').value,
+    obs:document.getElementById('f-obs-val').value.trim(),
+  };
+  if(editingId){demandas=demandas.map(x=>x.id===editingId?d:x);}
+  else{demandas.unshift(d);}
+  save();
+  if(window._fbReady) await window._fbSave(d);
+  closeModal();renderBoard();showNotice(editingId?'Demanda atualizada!':'Demanda adicionada!');
+}
+
+async function deleteDemanda(){
+  if(!editingId)return;
+  if(window._fbReady) await window._fbDelete(editingId);
+  demandas=demandas.filter(d=>d.id!==editingId);
+  save();closeModal();renderBoard();showNotice('Demanda removida.');
+}
+
+function renderCEO(){
+  const now=new Date();
+  const semana=`Semana de ${now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}`;
+  document.getElementById('ceo-week').textContent=semana;
+  document.getElementById('ceo-footer-date').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
+
+  const concluidas=demandas.filter(d=>d.status==='concluido');
+  const andamento=demandas.filter(d=>d.status==='andamento'||d.status==='homologacao');
+  const bloqueadas=demandas.filter(d=>d.status==='bloqueado');
+
+  document.getElementById('ceo-metrics').innerHTML=`
+    <div class="ceo-mc"><div class="ceo-mc-val" style="color:var(--verde)">${concluidas.length}</div><div class="ceo-mc-label">Entregas concluídas</div></div>
+    <div class="ceo-mc"><div class="ceo-mc-val" style="color:var(--laranja)">${andamento.length}</div><div class="ceo-mc-label">Em andamento</div></div>
+    <div class="ceo-mc"><div class="ceo-mc-val" style="color:var(--vermelho)">${bloqueadas.length}</div><div class="ceo-mc-label">Bloqueadas</div></div>
+  `;
+
+  document.getElementById('ceo-sections').innerHTML=`
+    <div class="ceo-section">
+      <div class="ceo-section-title"><div class="dot dot-green"></div>Entregas concluídas</div>
+      ${concluidas.length?concluidas.map(d=>`<div class="ceo-item"><div class="ceo-item-text">${d.desc}${d.conclusao?' · '+formatDate(d.conclusao):''}</div><span class="ceo-item-client">${d.cliente}</span></div>`).join(''):'<div style="font-size:13px;color:var(--cinza-text);">Nenhuma entrega concluída ainda.</div>'}
+    </div>
+    <div class="ceo-section">
+      <div class="ceo-section-title"><div class="dot dot-orange"></div>Em andamento / Homologação</div>
+      ${andamento.length?andamento.map(d=>`<div class="ceo-item"><div class="ceo-item-text">${d.desc}${d.prazo?' · Previsão: '+formatDate(d.prazo):''}</div><span class="ceo-item-client">${d.cliente}</span></div>`).join(''):'<div style="font-size:13px;color:var(--cinza-text);">Nenhuma demanda em andamento.</div>'}
+    </div>
+    <div class="ceo-section">
+      <div class="ceo-section-title"><div class="dot dot-red"></div>Bloqueadas — requer atenção</div>
+      ${bloqueadas.length?bloqueadas.map(d=>`<div class="ceo-item"><div style="flex:1"><div class="ceo-item-text">${d.desc}</div>${d.obs?`<div class="ceo-item-bloq">${d.obs}</div>`:''}</div><span class="ceo-item-client">${d.cliente}</span></div>`).join(''):'<div style="font-size:13px;color:var(--cinza-text);">Nenhuma demanda bloqueada.</div>'}
+    </div>
+  `;
+}
+
+async function gerarResumoCEO(){
+  showTab('ceo',document.querySelectorAll('.nav-btn')[1]);
+  const el=document.getElementById('ai-resumo');
+  const key=getKey();
+  if(key){
+    el.className='ai-text ai-loading';el.textContent='Gerando diagnóstico com IA...';
+    const sum=demandas.map(d=>`[${d.status}] ${d.desc} | Cliente: ${d.cliente} | Área: ${d.area} | Resp: ${d.resp}${d.obs?' | Obs: '+d.obs:''}`).join('\n');
+    try{
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:`Você é um assistente de gestão de projetos da Copi Gestão Empresarial. Com base nas demandas abaixo, gere um parágrafo executivo de 4-5 frases para apresentação à CEO Isabela. Destaque: entregas da semana, riscos e bloqueios críticos, próximos passos prioritários. Tom profissional e direto. Em português.\n\nDemandas:\n${sum}`}]})
+      });
+      const data=await resp.json();
+      if(data.error){gerarResumoPadrao(el);return;}
+      el.className='ai-text';el.textContent=data.content.map(c=>c.text||'').join('');
+      return;
+    }catch(e){}
+  }
+  gerarResumoPadrao(el);
+}
+
+function gerarResumoPadrao(el){
+  el=el||document.getElementById('ai-resumo');
+  const total=demandas.length;
+  const concluidas=demandas.filter(d=>d.status==='concluido');
+  const andamento=demandas.filter(d=>d.status==='andamento');
+  const bloqueadas=demandas.filter(d=>d.status==='bloqueado');
+  const homologacao=demandas.filter(d=>d.status==='homologacao');
+  const pct=total?Math.round(concluidas.length/total*100):0;
+  const clientes=[...new Set(demandas.map(d=>d.cliente))].filter(c=>c!=='Interno');
+  
+  let texto=`Semana de ${new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})} — `;
+  texto+=`O portfólio conta com ${total} demandas ativas distribuídas entre ${clientes.length} clientes e operações internas, com taxa de conclusão de ${pct}%. `;
+  
+  if(concluidas.length>0){
+    texto+=`Foram concluídas ${concluidas.length} entrega${concluidas.length>1?'s':''} este período`;
+    const cls=[...new Set(concluidas.map(d=>d.cliente))];
+    texto+=cls.length?` (${cls.join(', ')}). `:'. ';
+  }
+  
+  if(andamento.length>0){
+    texto+=`Há ${andamento.length} demanda${andamento.length>1?'s':''} em andamento`;
+    if(homologacao.length>0) texto+=` e ${homologacao.length} em homologação aguardando aprovação`;
+    texto+='. ';
+  }
+  
+  if(bloqueadas.length>0){
+    texto+=`Atenção: ${bloqueadas.length} item${bloqueadas.length>1?'ns estão bloqueados':' está bloqueado'} por dependências externas — `;
+    const obs=bloqueadas.map(d=>d.cliente+(d.obs?' ('+d.obs+')':'')).join('; ');
+    texto+=obs+'. ';
+  }
+  
+  const proximos=demandas.filter(d=>d.status==='andamento'&&d.prazo).sort((a,b)=>a.prazo.localeCompare(b.prazo)).slice(0,3);
+  if(proximos.length>0){
+    texto+=`Próximas entregas previstas: ${proximos.map(d=>d.desc+' ('+formatDate(d.prazo)+')').join('; ')}.`;
+  }
+  
+  el.className='ai-text';
+  el.textContent=texto;
+}
+
+// INIT
+document.getElementById('top-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+// Firebase integration
+function initFirebase() {
+  document.getElementById('fb-label').textContent='Conectando...';document.getElementById('fb-dot').style.background='#E8892A';
+  window._fbListen(function(data) {
+    if(data && data.length > 0) {
+      demandas = data;
+    } else {
+      // First time: push default demandas to Firebase
+      demandas.forEach(d => window._fbSave(d));
+    }
+    renderBoard();
+    document.getElementById('fb-dot').style.background='#2E9E6B';document.getElementById('fb-label').textContent='Sincronizado';
+  });
+}
+
+if(window._fbReady) {
+  initFirebase();
+} else {
+  window.addEventListener('firebase-ready', initFirebase);
+  // Fallback: render from localStorage while waiting
+  renderBoard();
+}
+
+// Override save to use Firebase
+const _origSave = save;
+window.save = function() {
+  _origSave();
+};
+
+// Override addTarefa-like ops to sync Firebase
+async function fbSaveDemanda(d) {
+  if(window._fbReady) {
+    const saved = await window._fbSave(d);
+    if(saved) {
+      const idx = demandas.findIndex(x => x.id === d.id || (x.desc === d.desc && x.cliente === d.cliente));
+      if(idx >= 0) demandas[idx] = saved;
+      else demandas.unshift(saved);
+    }
+  }
+  renderBoard();
+}
+
+async function fbDeleteDemanda(id) {
+  if(window._fbReady) await window._fbDelete(id);
+  demandas = demandas.filter(d => d.id !== id);
+  renderBoard();
+}
+</script>
+</body>
+</html>
