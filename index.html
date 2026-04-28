@@ -328,6 +328,16 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     await signOut(auth);
   };
 
+  // Busca chave da API do Firestore
+  window._fbGetApiKey = async function() {
+    try {
+      const snap = await getDocs(collection(db, 'config'));
+      let key = '';
+      snap.forEach(d => { if(d.id === 'api' && d.data().anthropic_key) key = d.data().anthropic_key; });
+      return key;
+    } catch(e) { return ''; }
+  };
+
   // Expose DB functions globally
   window._fbSave = async function(d) {
     try {
@@ -693,7 +703,7 @@ function showTab(id,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
-  if(id==='ceo'){renderCEO();gerarResumoPadrao(document.getElementById('ai-resumo'));}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
+  if(id==='ceo'){renderCEO();gerarResumoCEO();}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
 }
 
 function getClientes(){
@@ -865,7 +875,7 @@ function navegarSemana(dir) {
     btnProx.style.pointerEvents = semanaOffset === 0 ? 'none' : 'auto';
   }
   renderCEO();
-  gerarResumoPadrao(document.getElementById('ai-resumo'));
+  gerarResumoCEO();
 }
 
 function getInicioFimSemanaOffset(offset) {
