@@ -138,11 +138,14 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 .ceo-item-client{font-size:11px;font-weight:600;color:var(--laranja);background:var(--laranja-light);padding:2px 8px;border-radius:20px;white-space:nowrap;}
 .ceo-item-bloq{font-size:11px;color:var(--vermelho);font-style:italic;}
 .ai-resumo-box{background:linear-gradient(135deg,#0E3A5C 0%,#1a5a8a 100%);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:16px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 4px 24px rgba(14,58,92,0.3);}
-.ai-resumo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.ai-resumo-head span:first-child{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#fff;letter-spacing:0.02em;}
+.ai-resumo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.ai-resumo-head span:first-child{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:0.08em;text-transform:uppercase;}
 .ai-badge{font-size:10px;background:var(--laranja);color:var(--branco);padding:3px 8px;border-radius:20px;font-family:'Sora',sans-serif;}
-.ai-text{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.8;min-height:48px;font-weight:400;}
-.ai-loading{font-style:italic;color:rgba(255,255,255,0.4);font-size:13px;}
+.ai-text{font-size:14px;color:rgba(255,255,255,0.92);line-height:1.85;min-height:48px;font-weight:400;}
+.ai-text p{margin-bottom:10px;}
+.ai-text p:last-child{margin-bottom:0;}
+.ai-text strong{color:#fff;font-weight:600;}
+.ai-loading{font-style:italic;color:rgba(255,255,255,0.35);font-size:13px;}
 .ceo-footer{text-align:center;padding:1.5rem 0;font-size:12px;color:var(--cinza-text);}
 .btn-gerar{background:var(--laranja);color:var(--branco);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;}
 .btn-gerar:hover{background:var(--laranja-dark);}
@@ -413,7 +416,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   <button class="nav-btn active" onclick="showTab('ceo',this);renderCEO();gerarResumoPadrao()">Resumo da Empresa</button>
 </div>
 <div class="nav-bar">
-  <button class="nav-btn active" onclick="showTab('gestao',this)">Board</button>
+  <button class="nav-btn" onclick="showTab('gestao',this)">Board</button>
   <button class="nav-btn" onclick="showTab('semana',this)">🗓 Minha Semana</button>
   <button class="nav-btn" onclick="showTab('ceo',this)">Resumo CEO</button>
   <button class="nav-btn" onclick="showTab('config',this)">⚙ Config</button>
@@ -475,13 +478,10 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     </div>
     <div class="ai-resumo-box">
       <div class="ai-resumo-head">
-        <span>Diagnóstico da semana</span>
-        <div id="ai-admin-controls" style="display:flex;gap:8px;align-items:center;">
-          <span class="ai-badge">Claude</span>
-          <button class="btn-gerar" onclick="gerarResumoCEO()">Atualizar ↗</button>
-        </div>
+        <span>Diagnóstico executivo</span>
+        <span id="ai-status-badge" style="font-size:10px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);padding:3px 10px;border-radius:20px;">carregando...</span>
       </div>
-      <div class="ai-text ai-loading" id="ai-resumo">Clique em "Atualizar" para gerar o diagnóstico automático da semana.</div>
+      <div id="ai-resumo" class="ai-text ai-loading" style="min-height:100px;">Analisando dados da semana...</div>
     </div>
     <div class="ceo-metrics" id="ceo-metrics"></div>
     <div id="ceo-sections"></div>
@@ -708,9 +708,15 @@ function showNotice(msg){
 function showTab(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  if(btn)btn.classList.add('active');
-  if(id==='ceo'){renderCEO();gerarResumoCEO();}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
+  const tabEl = document.getElementById('tab-'+id);
+  if(tabEl) tabEl.classList.add('active');
+  if(btn && btn.classList) btn.classList.add('active');
+  // Esconde metrics bar na aba CEO (já tem os cards de métricas próprios)
+  const metricBar = document.getElementById('metrics-bar');
+  if(metricBar) metricBar.style.display = id === 'ceo' ? 'none' : '';
+  if(id==='ceo'){renderCEO();setTimeout(()=>gerarResumoCEO(),300);}
+  if(id==='config'){renderConfig();}
+  if(id==='semana'){renderSemana();}
 }
 
 function getClientes(){
@@ -882,7 +888,7 @@ function navegarSemana(dir) {
     btnProx.style.pointerEvents = semanaOffset === 0 ? 'none' : 'auto';
   }
   renderCEO();
-  gerarResumoCEO();
+  setTimeout(()=>gerarResumoCEO(),200);
 }
 
 function getInicioFimSemanaOffset(offset) {
