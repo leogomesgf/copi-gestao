@@ -440,8 +440,13 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     <div class="ceo-header">
       <div style="font-family:Sora,sans-serif;font-size:28px;font-weight:700;color:#0E3A5C;letter-spacing:-0.01em;margin-bottom:0.5rem;">Copi <span style="color:#E8892A;">Gestão</span></div>
       <div class="ceo-title" id="ceo-titulo">Relatório Semanal de Projetos</div>
-      <div class="ceo-subtitle">Tecnologia & BI · Controladoria</div>
-      <div class="ceo-week" id="ceo-week"></div>
+      <div class="ceo-subtitle">Gestão de Projetos &amp; Operações</div>
+      <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-top:10px;">
+        <button onclick="navegarSemana(-1)" style="background:rgba(255,255,255,0.1);border:none;color:var(--preto);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;font-family:inherit;">‹</button>
+        <div class="ceo-week" id="ceo-week" style="margin:0;"></div>
+        <button onclick="navegarSemana(1)" id="btn-prox-semana" style="background:rgba(255,255,255,0.1);border:none;color:var(--preto);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;font-family:inherit;">›</button>
+      </div>
+      <div id="ceo-semana-num" style="font-size:11px;color:var(--cinza-text);margin-top:4px;"></div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
       <select id="ceo-filter-area" onchange="renderCEO();gerarResumoPadrao()" style="font-size:12px;padding:7px 12px;border:1px solid var(--cinza-border);border-radius:8px;background:#fff;font-family:'DM Sans',sans-serif;flex:1;">
@@ -848,6 +853,46 @@ async function deleteDemanda(){
   save();closeModal();renderBoard();showNotice('Demanda removida.');
 }
 
+// Semana offset (0 = semana atual, -1 = semana passada, etc)
+let semanaOffset = 0;
+
+function navegarSemana(dir) {
+  semanaOffset += dir;
+  // Não permite ir além da semana atual
+  if(semanaOffset > 0) semanaOffset = 0;
+  // Atualiza botão próxima semana
+  document.getElementById('btn-prox-semana').style.opacity = semanaOffset === 0 ? '0.3' : '1';
+  document.getElementById('btn-prox-semana').style.pointerEvents = semanaOffset === 0 ? 'none' : 'auto';
+  renderCEO();
+  gerarResumoPadrao();
+}
+
+function getInicioFimSemanaOffset(offset) {
+  // Semana terça a terça
+  const hoje = new Date();
+  const dow = hoje.getDay(); // 0=dom, 1=seg, 2=ter...
+  // Dias até a última terça (início da semana atual)
+  const diasAteUltimaTerca = dow >= 2 ? dow - 2 : dow + 5;
+  const inicioSemanaAtual = new Date(hoje);
+  inicioSemanaAtual.setDate(hoje.getDate() - diasAteUltimaTerca);
+  inicioSemanaAtual.setHours(0,0,0,0);
+  // Aplica offset de semanas
+  const inicio = new Date(inicioSemanaAtual);
+  inicio.setDate(inicioSemanaAtual.getDate() + (offset * 7));
+  const fim = new Date(inicio);
+  fim.setDate(inicio.getDate() + 6);
+  fim.setHours(23,59,59,999);
+  return { inicio, fim };
+}
+
+function getNumeroSemana(data) {
+  const d = new Date(Date.UTC(data.getFullYear(), data.getMonth(), data.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
 function getCeoFiltered(){
   const fa=document.getElementById('ceo-filter-area');
   const fc=document.getElementById('ceo-filter-cliente');
@@ -880,13 +925,34 @@ function renderCEO(){
   populateCeoFilters();
   const filtered=getCeoFiltered();
   const now=new Date();
-  const semana=`Semana de ${now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}`;
-  document.getElementById('ceo-week').textContent=semana;
+  const {inicio, fim} = getInicioFimSemanaOffset(semanaOffset);
+  const numSemana = getNumeroSemana(inicio);
+  const fmtOpts = {day:'numeric',month:'short'};
+  const periodoLabel = `${inicio.toLocaleDateString('pt-BR',fmtOpts)} → ${fim.toLocaleDateString('pt-BR',fmtOpts)} de ${fim.getFullYear()}`;
+  const semanaLabel = semanaOffset === 0 ? `Semana atual — ${periodoLabel}` : semanaOffset === -1 ? `Semana passada — ${periodoLabel}` : `${Math.abs(semanaOffset)} semanas atrás — ${periodoLabel}`;
+  document.getElementById('ceo-week').textContent=semanaLabel;
+  document.getElementById('ceo-semana-num').textContent=`Semana ${numSemana} de ${fim.getFullYear()} · reunião terça a terça`;
   document.getElementById('ceo-footer-date').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
+  // Desabilita botão próxima semana se estiver na semana atual
+  const btnProx = document.getElementById('btn-prox-semana');
+  if(btnProx){btnProx.style.opacity=semanaOffset===0?'0.3':'1';btnProx.style.pointerEvents=semanaOffset===0?'none':'auto';}
 
-  const concluidas=filtered.filter(d=>d.status==='concluido');
-  const andamento=filtered.filter(d=>d.status==='andamento'||d.status==='homologacao');
-  const bloqueadas=filtered.filter(d=>d.status==='bloqueado');
+  // Filtra concluídas pelo período da semana selecionada
+  const concluidasSemana=demandas.filter(d=>{
+    if(d.status!=='concluido'||!d.conclusao)return false;
+    const c=new Date(d.conclusao+'T00:00:00');
+    return c>=inicio&&c<=fim;
+  });
+  const filtered2=getCeoFiltered();
+  const concluidas=semanaOffset===0?filtered2.filter(d=>d.status==='concluido'):concluidasSemana.filter(d=>{
+    const fa=document.getElementById('ceo-filter-area');
+    const fc=document.getElementById('ceo-filter-cliente');
+    if(fa&&fa.value!=='todas'&&d.area!==fa.value)return false;
+    if(fc&&fc.value!=='todos'&&d.cliente!==fc.value)return false;
+    return true;
+  });
+  const andamento=filtered2.filter(d=>d.status==='andamento'||d.status==='homologacao');
+  const bloqueadas=filtered2.filter(d=>d.status==='bloqueado');
 
   document.getElementById('ceo-metrics').innerHTML=`
     <div class="ceo-mc"><div class="ceo-mc-val" style="color:var(--verde)">${concluidas.length}</div><div class="ceo-mc-label">Entregas concluídas</div></div>
@@ -946,7 +1012,10 @@ function gerarResumoPadrao(el){
   const fc=document.getElementById('ceo-filter-cliente');
   const areaFiltro=fa&&fa.value!=='todas'?` (área: ${fa.value})`:'';
   
-  let texto=`Semana de ${new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}${areaFiltro} — `;
+  const {inicio:rInicio, fim:rFim} = getInicioFimSemanaOffset(semanaOffset);
+  const rPeriodo = `${rInicio.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} a ${rFim.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}`;
+  const rLabel = semanaOffset === 0 ? 'Semana atual' : semanaOffset === -1 ? 'Semana passada' : `${Math.abs(semanaOffset)} semanas atrás`;
+  let texto=`${rLabel} (${rPeriodo})${areaFiltro} — `;
   texto+=`O portfólio conta com ${total} demandas ativas distribuídas entre ${clientes.length} clientes e operações internas, com taxa de conclusão de ${pct}%. `;
   
   if(concluidas.length>0){
