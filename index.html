@@ -279,7 +279,8 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 
   // Perfis de acesso
   const PERFIS = {
-    'leandro.felipe@copigestao.com.br': { nome: 'Leandro Felipe', role: 'admin', areas: [] }
+    'leandro.felipe@copigestao.com.br': { nome: 'Leandro Felipe', role: 'admin', areas: [] },
+    'isabela@copigestao.com.br': { nome: 'Isabela', role: 'ceo', areas: [] }
   };
 
   // Auth state
@@ -294,6 +295,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
       document.getElementById('app-screen').style.display = 'block';
       document.getElementById('user-nome').textContent = window._currentPerfil.nome;
       const av=document.getElementById('user-avatar');if(av)av.textContent=window._currentPerfil.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+      aplicarPerfil(window._currentPerfil.role);
       window.dispatchEvent(new Event('firebase-ready'));
     } else {
       window._currentUser = null;
@@ -386,6 +388,9 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   </div>
 </div>
 
+<div id="ceo-nav-simple" style="display:none;background:var(--branco);border-bottom:1px solid var(--cinza-border);padding:0 2rem;align-items:center;">
+  <button class="nav-btn active" onclick="showTab('ceo',this);renderCEO();gerarResumoPadrao()">Resumo da Empresa</button>
+</div>
 <div class="nav-bar">
   <button class="nav-btn active" onclick="showTab('gestao',this)">Board</button>
   <button class="nav-btn" onclick="showTab('semana',this)">🗓 Minha Semana</button>
@@ -430,7 +435,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   <div class="ceo-view">
     <div class="ceo-header">
       <div style="font-family:Sora,sans-serif;font-size:28px;font-weight:700;color:#0E3A5C;letter-spacing:-0.01em;margin-bottom:0.5rem;">Copi <span style="color:#E8892A;">Gestão</span></div>
-      <div class="ceo-title">Relatório Semanal de Projetos</div>
+      <div class="ceo-title" id="ceo-titulo">Relatório Semanal de Projetos</div>
       <div class="ceo-subtitle">Tecnologia & BI · Controladoria</div>
       <div class="ceo-week" id="ceo-week"></div>
     </div>
@@ -859,6 +864,15 @@ function populateCeoFilters(){
 }
 
 function renderCEO(){
+  // Personaliza título para CEO
+  const tituloEl = document.getElementById('ceo-titulo');
+  if(tituloEl && window._currentPerfil) {
+    if(window._currentPerfil.role === 'ceo') {
+      tituloEl.textContent = 'Olá, ' + window._currentPerfil.nome + '! Aqui está o resumo da empresa.';
+    } else {
+      tituloEl.textContent = 'Relatório Semanal de Projetos';
+    }
+  }
   populateCeoFilters();
   const filtered=getCeoFiltered();
   const now=new Date();
@@ -1183,6 +1197,48 @@ function toggleAgendaDia(idx){
 }
 // ===== FIM MINHA SEMANA =====
 
+
+
+// ===== PERFIS =====
+function aplicarPerfil(role) {
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const metricBar = document.getElementById('metrics-bar');
+  const btnResumo = document.querySelector('.btn-resumo');
+
+  // Reset — show all first
+  navBtns.forEach(b => b.style.display = '');
+  if(metricBar) metricBar.style.display = '';
+
+  if(role === 'ceo') {
+    // CEO vê só Resumo CEO
+    navBtns.forEach(b => b.style.display = 'none');
+    if(metricBar) metricBar.style.display = 'none';
+    if(btnResumo) btnResumo.style.display = 'none';
+    // Auto open CEO tab
+    setTimeout(() => {
+      const ceoBtn = document.querySelector('[onclick*="ceo"]');
+      if(ceoBtn) { ceoBtn.style.display = 'block'; showTab('ceo', ceoBtn); }
+      else { showTab('ceo', {classList:{add:()=>{},remove:()=>{}}}); }
+      renderCEO(); gerarResumoPadrao();
+    }, 100);
+    // Show simple CEO nav
+    document.getElementById('ceo-nav-simple').style.display = 'flex';
+  } else if(role === 'admin') {
+    // Admin vê tudo
+    document.getElementById('ceo-nav-simple').style.display = 'none';
+    if(btnResumo) btnResumo.style.display = '';
+  } else {
+    // Analista — Board + Minha Semana, sem Config e sem Resumo CEO
+    document.getElementById('ceo-nav-simple').style.display = 'none';
+    if(btnResumo) btnResumo.style.display = 'none';
+    navBtns.forEach(b => {
+      if(b.textContent.includes('Config') || b.textContent.includes('Resumo CEO')) {
+        b.style.display = 'none';
+      }
+    });
+  }
+}
+// ===== FIM PERFIS =====
 
 // ===== AUTH =====
 async function fazerLogin(){
