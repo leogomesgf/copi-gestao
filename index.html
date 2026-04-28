@@ -939,20 +939,25 @@ function renderCEO(){
   if(btnProx){btnProx.style.opacity=semanaOffset===0?'0.3':'1';btnProx.style.pointerEvents=semanaOffset===0?'none':'auto';}
 
   // Filtra concluídas pelo período da semana selecionada
-  const concluidasSemana=demandas.filter(d=>{
+  const filtered2=getCeoFiltered();
+
+  // Concluídas: filtra pelo período da semana selecionada
+  const concluidas=filtered2.filter(d=>{
     if(d.status!=='concluido'||!d.conclusao)return false;
     const c=new Date(d.conclusao+'T00:00:00');
     return c>=inicio&&c<=fim;
   });
-  const filtered2=getCeoFiltered();
-  const concluidas=semanaOffset===0?filtered2.filter(d=>d.status==='concluido'):concluidasSemana.filter(d=>{
-    const fa=document.getElementById('ceo-filter-area');
-    const fc=document.getElementById('ceo-filter-cliente');
-    if(fa&&fa.value!=='todas'&&d.area!==fa.value)return false;
-    if(fc&&fc.value!=='todos'&&d.cliente!==fc.value)return false;
-    return true;
+
+  // Em andamento: demandas com prazo dentro da semana selecionada OU sem prazo (semana atual)
+  const andamento=filtered2.filter(d=>{
+    if(d.status!=='andamento'&&d.status!=='homologacao')return false;
+    if(semanaOffset===0)return true; // semana atual mostra tudo em andamento
+    if(!d.prazo)return false;
+    const p=new Date(d.prazo+'T00:00:00');
+    return p>=inicio&&p<=fim;
   });
-  const andamento=filtered2.filter(d=>d.status==='andamento'||d.status==='homologacao');
+
+  // Bloqueadas: sempre mostra as atuais (bloqueio não tem data)
   const bloqueadas=filtered2.filter(d=>d.status==='bloqueado');
 
   document.getElementById('ceo-metrics').innerHTML=`
