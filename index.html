@@ -1303,43 +1303,38 @@ function aplicarPerfil(role) {
   const navBtns = document.querySelectorAll('.nav-btn');
   const metricBar = document.getElementById('metrics-bar');
   const btnResumo = document.querySelector('.btn-resumo');
+  const ceoNavSimple = document.getElementById('ceo-nav-simple');
 
-  // Reset — show all first
+  // Reset — mostra tudo primeiro
   navBtns.forEach(b => b.style.display = '');
   if(metricBar) metricBar.style.display = '';
+  if(btnResumo) btnResumo.style.display = 'none';
+  if(ceoNavSimple) ceoNavSimple.style.display = 'none';
+
+  if(role === 'admin') {
+    // Admin vê TUDO — nada escondido
+    return;
+  }
 
   if(role === 'ceo') {
-    // CEO vê só Resumo CEO
+    // CEO vê só Resumo da Empresa
     navBtns.forEach(b => b.style.display = 'none');
     if(metricBar) metricBar.style.display = 'none';
-    if(btnResumo) btnResumo.style.display = 'none';
-    const aiCtrl = document.getElementById('ai-admin-controls');
-    if(aiCtrl) aiCtrl.style.display = 'none';
-    // Auto open CEO tab
+    if(ceoNavSimple) ceoNavSimple.style.display = 'flex';
     setTimeout(() => {
-      const ceoBtn = document.querySelector('[onclick*="ceo"]');
-      if(ceoBtn) { ceoBtn.style.display = 'block'; showTab('ceo', ceoBtn); }
-      else { showTab('ceo', {classList:{add:()=>{},remove:()=>{}}}); }
-      renderCEO(); gerarResumoPadrao();
+      const ceoBtn = document.querySelector('#ceo-nav-simple .nav-btn');
+      showTab('ceo', ceoBtn || {classList:{add:()=>{},remove:()=>{}}});
+      renderCEO(); gerarResumoCEO();
     }, 300);
-    // Show simple CEO nav
-    document.getElementById('ceo-nav-simple').style.display = 'flex';
-  } else if(role === 'admin') {
-    // Admin vê tudo
-    document.getElementById('ceo-nav-simple').style.display = 'none';
-    if(btnResumo) btnResumo.style.display = '';
-    const aiCtrl = document.getElementById('ai-admin-controls');
-    if(aiCtrl) aiCtrl.style.display = 'flex';
-  } else {
-    // Analista — Board + Minha Semana, sem Config e sem Resumo CEO
-    document.getElementById('ceo-nav-simple').style.display = 'none';
-    if(btnResumo) btnResumo.style.display = 'none';
-    navBtns.forEach(b => {
-      if(b.textContent.includes('Config') || b.textContent.includes('Resumo CEO')) {
-        b.style.display = 'none';
-      }
-    });
+    return;
   }
+
+  // Analista — Board + Minha Semana apenas
+  navBtns.forEach(b => {
+    if(b.textContent.includes('Config') || b.textContent.includes('Resumo CEO')) {
+      b.style.display = 'none';
+    }
+  });
 }
 // ===== FIM PERFIS =====
 
