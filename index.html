@@ -161,11 +161,107 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   .topbar{padding:0 1rem;}
   .content,.metrics-bar{padding-left:1rem;padding-right:1rem;}
 }
+
+/* MINHA SEMANA */
+.semana-hero{background:var(--preto);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.semana-hero-left h2{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
+.semana-hero-left p{font-size:13px;color:rgba(255,255,255,0.5);}
+.semana-hero-right{text-align:right;}
+.conquista-num{font-family:'Sora',sans-serif;font-size:42px;font-weight:700;color:var(--laranja);line-height:1;}
+.conquista-label{font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.semana-alertas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem;}
+.alerta-card{border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.alerta-card.vermelho{background:var(--vermelho-light);border:1px solid #f5c6c2;}
+.alerta-card.amarelo{background:var(--amarelo-light);border:1px solid #f5e0a0;}
+.alerta-card.verde{background:var(--verde-light);border:1px solid #b0e0c8;}
+.alerta-icon{font-size:22px;}
+.alerta-info strong{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;display:block;}
+.alerta-info span{font-size:11px;color:var(--cinza-text);}
+.alerta-card.vermelho .alerta-info strong{color:var(--vermelho);}
+.alerta-card.amarelo .alerta-info strong{color:var(--amarelo);}
+.alerta-card.verde .alerta-info strong{color:var(--verde);}
+.semana-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.25rem;}
+.semana-card{background:#fff;border:1px solid var(--cinza-border);border-radius:12px;padding:1rem 1.25rem;}
+.semana-card-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--preto);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.hoje-item{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:8px;margin-bottom:6px;border:1px solid var(--cinza-border);background:#fff;}
+.hoje-item.atrasado{background:var(--vermelho-light);border-color:#f5c6c2;}
+.hoje-item.hoje{background:var(--amarelo-light);border-color:#f5e0a0;}
+.hoje-item.semana{background:#fff;}
+.hoje-item-info{flex:1;}
+.hoje-item-desc{font-size:12px;font-weight:500;color:var(--preto);margin-bottom:3px;line-height:1.4;}
+.hoje-item-meta{font-size:11px;color:var(--cinza-text);}
+.hoje-item-meta .prazo-tag{font-weight:600;}
+.prazo-atrasado{color:var(--vermelho);}
+.prazo-hoje{color:var(--amarelo);}
+.prazo-semana{color:var(--verde);}
+.btn-concluir{background:var(--verde);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.btn-concluir:hover{opacity:.85;}
+.conquista-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:var(--verde-light);border:1px solid #b0e0c8;margin-bottom:6px;}
+.conquista-check{font-size:16px;}
+.conquista-desc{font-size:12px;font-weight:500;color:var(--preto);flex:1;}
+.conquista-cliente{font-size:10px;font-weight:600;color:var(--laranja);background:var(--laranja-light);padding:2px 7px;border-radius:20px;}
+.conquista-data{font-size:10px;color:var(--cinza-text);}
+.agenda-dia{border:1px solid var(--cinza-border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:all .2s;}
+.agenda-dia.hoje-agenda{border-color:var(--laranja);}
+.agenda-dia.atrasado-agenda{border-color:var(--vermelho);}
+.agenda-dia-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:#fff;user-select:none;}
+.agenda-dia.hoje-agenda .agenda-dia-header{background:var(--laranja-light);}
+.agenda-dia.atrasado-agenda .agenda-dia-header{background:var(--vermelho-light);}
+.agenda-dia-header:hover{background:var(--cinza-light);}
+.agenda-dia.hoje-agenda .agenda-dia-header:hover{background:#ffe8cc;}
+.agenda-dia-left{display:flex;align-items:center;gap:10px;}
+.agenda-dia-label{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--preto);}
+.agenda-dia.hoje-agenda .agenda-dia-label{color:var(--laranja-dark);}
+.agenda-dia.atrasado-agenda .agenda-dia-label{color:var(--vermelho);}
+.agenda-dia-badge{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500;}
+.agenda-badge-normal{background:var(--cinza-light);color:var(--cinza-text);}
+.agenda-badge-hoje{background:var(--laranja);color:#fff;}
+.agenda-badge-atrasado{background:var(--vermelho);color:#fff;}
+.agenda-badge-livre{background:var(--verde-light);color:var(--verde);}
+.agenda-dia-arrow{font-size:12px;color:var(--cinza-text);transition:transform .2s;}
+.agenda-dia-arrow.open{transform:rotate(180deg);}
+.agenda-dia-body{display:none;border-top:1px solid var(--cinza-border);padding:10px 12px;background:#fafaf8;}
+.agenda-dia-body.open{display:block;}
+.agenda-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;border:1px solid var(--cinza-border);background:#fff;margin-bottom:7px;}
+.agenda-item.item-atrasado{background:var(--vermelho-light);border-color:#f5c6c2;}
+.agenda-item.item-hoje{background:var(--amarelo-light);border-color:#f5e0a0;}
+.agenda-item.item-concluido{opacity:.5;}
+.agenda-item.item-concluido .agenda-item-desc{text-decoration:line-through;}
+.agenda-item-info{flex:1;}
+.agenda-item-desc{font-size:12px;font-weight:500;color:var(--preto);margin-bottom:3px;line-height:1.4;}
+.agenda-item-meta{font-size:11px;color:var(--cinza-text);}
+.agenda-item-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.agenda-item-area{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;}
+.agenda-livre{text-align:center;padding:12px;font-size:12px;color:var(--cinza-text);}
+.frase-motivacional{background:linear-gradient(135deg,var(--preto) 0%,#1a5580 100%);border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.25rem;text-align:center;}
+.frase-motivacional p{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#fff;}
+.frase-motivacional span{font-size:12px;color:rgba(255,255,255,0.5);display:block;margin-top:4px;}
+@media(max-width:768px){.semana-grid{grid-template-columns:1fr;}.semana-alertas{grid-template-columns:1fr;}.semana-hero{flex-direction:column;gap:12px;text-align:center;}}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--preto);display:flex;align-items:center;justify-content:center;z-index:999;}
+#app-screen{display:none;}
+.login-box{background:#fff;border-radius:16px;padding:2.5rem;width:380px;max-width:95vw;}
+.login-logo{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;color:var(--preto);margin-bottom:4px;}
+.login-logo span{color:var(--laranja);}
+.login-sub{font-size:13px;color:var(--cinza-text);margin-bottom:2rem;}
+.login-label{font-size:11px;font-weight:500;color:var(--cinza-text);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px;display:block;}
+.login-input{width:100%;padding:10px 12px;border:1px solid var(--cinza-border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:14px;outline:none;}
+.login-input:focus{border-color:var(--laranja);}
+.login-btn{width:100%;background:var(--laranja);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
+.login-btn:hover{background:var(--laranja-dark);}
+.login-error{font-size:12px;color:var(--vermelho);margin-top:8px;min-height:18px;}
+.user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border-radius:20px;padding:4px 12px 4px 4px;cursor:pointer;}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:var(--laranja);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;}
+.user-nome{font-size:12px;color:rgba(255,255,255,0.8);}
+.logout-btn{font-size:11px;color:rgba(255,255,255,0.5);background:none;border:none;cursor:pointer;padding:2px 4px;}
+.logout-btn:hover{color:#fff;}
 </style>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAkQD4RUSQRHgwr35GH1ukCjXp4sa7cs14",
@@ -178,7 +274,53 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
   const col = collection(db, "demandas");
+
+  // Perfis de acesso
+  const PERFIS = {
+    'leandro.felipe@copigestao.com.br': { nome: 'Leandro Felipe', role: 'admin', areas: [] }
+  };
+
+  // Auth state
+  window._currentUser = null;
+  window._currentPerfil = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      window._currentUser = user;
+      window._currentPerfil = PERFIS[user.email] || { nome: user.email, role: 'analista', areas: [] };
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'block';
+      document.getElementById('user-nome').textContent = window._currentPerfil.nome;
+      const av=document.getElementById('user-avatar');if(av)av.textContent=window._currentPerfil.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+      window.dispatchEvent(new Event('firebase-ready'));
+    } else {
+      window._currentUser = null;
+      window._currentPerfil = null;
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app-screen').style.display = 'none';
+    }
+  });
+
+  window._fbLogin = async function(email, senha) {
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+      return { ok: true };
+    } catch(e) {
+      const msgs = {
+        'auth/invalid-credential': 'E-mail ou senha incorretos.',
+        'auth/user-not-found': 'Usuário não encontrado.',
+        'auth/wrong-password': 'Senha incorreta.',
+        'auth/too-many-requests': 'Muitas tentativas. Aguarde um momento.',
+      };
+      return { ok: false, msg: msgs[e.code] || 'Erro ao entrar. Tente novamente.' };
+    }
+  };
+
+  window._fbLogout = async function() {
+    await signOut(auth);
+  };
 
   // Expose DB functions globally
   window._fbSave = async function(d) {
@@ -217,6 +359,20 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 </head>
 <body>
 
+<div id="login-screen" style="display:flex;">
+  <div class="login-box">
+    <div class="login-logo">Copi <span>Gestão</span></div>
+    <div class="login-sub">Painel de Projetos — faça login para continuar</div>
+    <label class="login-label">E-mail</label>
+    <input type="email" class="login-input" id="login-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')document.getElementById('login-senha').focus()"/>
+    <label class="login-label">Senha</label>
+    <input type="password" class="login-input" id="login-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()"/>
+    <button class="login-btn" onclick="fazerLogin()">Entrar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<div id="app-screen" style="display:none;">
 <div class="topbar">
   <div class="logo-area">
     <span class="logo-text" style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.01em;">Copi <span style="color:#E8892A;">Gestão</span></span>
@@ -224,6 +380,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     <span class="logo-sub">Painel de Projetos</span>
   </div>
   <div class="topbar-right">
+    <div class="user-chip" title="Sair" onclick="fazerLogout()"><div class="user-avatar" id="user-avatar">L</div><span class="user-nome" id="user-nome">...</span><button class="logout-btn">↩</button></div>
     <span id="fb-status" style="font-size:11px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px;"><span id="fb-dot" style="width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;"></span><span id="fb-label">Conectando...</span></span><span class="top-date" id="top-date"></span>
     <button class="btn-resumo" onclick="showTab('ceo',document.querySelectorAll('.nav-btn')[1]);gerarResumoCEO()">Resumo CEO ↗</button>
   </div>
@@ -231,6 +388,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 
 <div class="nav-bar">
   <button class="nav-btn active" onclick="showTab('gestao',this)">Board</button>
+  <button class="nav-btn" onclick="showTab('semana',this)">🗓 Minha Semana</button>
   <button class="nav-btn" onclick="showTab('ceo',this)">Resumo CEO</button>
   <button class="nav-btn" onclick="showTab('config',this)">⚙ Config</button>
 </div>
@@ -276,6 +434,14 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
       <div class="ceo-subtitle">Tecnologia & BI · Controladoria</div>
       <div class="ceo-week" id="ceo-week"></div>
     </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <select id="ceo-filter-area" onchange="renderCEO();gerarResumoPadrao()" style="font-size:12px;padding:7px 12px;border:1px solid var(--cinza-border);border-radius:8px;background:#fff;font-family:'DM Sans',sans-serif;flex:1;">
+        <option value="todas">Todas as áreas</option>
+      </select>
+      <select id="ceo-filter-cliente" onchange="renderCEO();gerarResumoPadrao()" style="font-size:12px;padding:7px 12px;border:1px solid var(--cinza-border);border-radius:8px;background:#fff;font-family:'DM Sans',sans-serif;flex:1;">
+        <option value="todos">Todos os clientes</option>
+      </select>
+    </div>
     <div class="ai-resumo-box">
       <div class="ai-resumo-head">
         <span>Diagnóstico IA</span>
@@ -294,9 +460,80 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   </div>
 </div>
 
+
+<!-- MINHA SEMANA -->
+<div class="section" id="tab-semana">
+  <div class="semana-hero">
+    <div class="semana-hero-left">
+      <h2 id="semana-hero-nome">Olá, Leandro! 👋</h2>
+      <p id="semana-hero-sub">Veja o que te espera essa semana</p>
+    </div>
+    <div class="semana-hero-right">
+      <div class="conquista-num" id="semana-conquistas-num">0</div>
+      <div class="conquista-label">entregas concluídas<br/>essa semana 🏆</div>
+    </div>
+  </div>
+  <div class="frase-motivacional" id="frase-box">
+    <p id="frase-texto">Carregando...</p>
+    <span id="frase-sub"></span>
+  </div>
+  <div class="semana-alertas">
+    <div class="alerta-card vermelho">
+      <div class="alerta-icon">🔴</div>
+      <div class="alerta-info"><strong id="count-atrasado">0</strong><span>atrasadas</span></div>
+    </div>
+    <div class="alerta-card amarelo">
+      <div class="alerta-icon">🟡</div>
+      <div class="alerta-info"><strong id="count-hoje">0</strong><span>vencem hoje</span></div>
+    </div>
+    <div class="alerta-card verde">
+      <div class="alerta-icon">🟢</div>
+      <div class="alerta-info"><strong id="count-semana">0</strong><span>vencem essa semana</span></div>
+    </div>
+  </div>
+  <div class="semana-grid">
+    <div class="semana-card">
+      <div class="semana-card-title">🎯 Prioridade agora</div>
+      <div id="lista-prioridade"></div>
+    </div>
+    <div class="semana-card">
+      <div class="semana-card-title">🏆 Conquistado essa semana</div>
+      <div id="lista-conquistas"></div>
+    </div>
+  </div>
+  <div class="semana-card" style="margin-bottom:1.25rem;">
+    <div class="semana-card-title">📅 Agenda da semana</div>
+    <div id="agenda-semana"></div>
+  </div>
+</div>
+
 <!-- CONFIG -->
 <div class="section" id="tab-config">
   <div class="config-section">
+    <div class="config-card">
+      <h3>Responsáveis</h3>
+      <div id="resp-manager" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:28px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="new-resp" class="form-input" placeholder="Nome do responsável..." style="flex:1;" onkeydown="if(event.key==='Enter')addConfig('resp')"/>
+        <button class="btn-add-demanda" onclick="addConfig('resp')">+ Add</button>
+      </div>
+    </div>
+    <div class="config-card">
+      <h3>Áreas</h3>
+      <div id="area-manager" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:28px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="new-area" class="form-input" placeholder="Nome da área..." style="flex:1;" onkeydown="if(event.key==='Enter')addConfig('area')"/>
+        <button class="btn-add-demanda" onclick="addConfig('area')">+ Add</button>
+      </div>
+    </div>
+    <div class="config-card">
+      <h3>Clientes</h3>
+      <div id="cliente-manager" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:28px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="new-cliente" class="form-input" placeholder="Nome do cliente..." style="flex:1;" onkeydown="if(event.key==='Enter')addConfig('cliente')"/>
+        <button class="btn-add-demanda" onclick="addConfig('cliente')">+ Add</button>
+      </div>
+    </div>
     <div class="config-card">
       <h3>Chave de API — IA</h3>
       <p style="font-size:12px;color:var(--cinza-text);margin-bottom:10px;line-height:1.6;">Para usar o diagnóstico automático, cole sua chave da Anthropic. Ela fica salva apenas no seu navegador.</p>
@@ -329,7 +566,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Cliente</label>
-        <input type="text" class="form-input" id="f-cliente-val" placeholder="Ex: Sushi, Interno..."/>
+        <select class="form-input" id="f-cliente-val"></select>
       </div>
       <div class="form-group">
         <label class="form-label">Área</label>
@@ -374,7 +611,11 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     </div>
     <div class="form-group">
       <label class="form-label">Observação / Bloqueio</label>
-      <input type="text" class="form-input" id="f-obs-val" placeholder="Ex: Aguardando retorno da Elisangela"/>
+      <input type="text" class="form-input" id="f-obs-val" placeholder="Ex: Aguardando retorno do Cliente"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Checklist <span style="font-size:10px;color:var(--cinza-text);font-weight:400;text-transform:none;">(uma tarefa por linha)</span></label>
+      <textarea class="form-input" id="f-checklist-val" rows="3" placeholder="Ex:&#10;Mapear tabelas&#10;Criar medidas&#10;Validar com cliente" style="resize:vertical;line-height:1.6;"></textarea>
     </div>
     <button class="btn-save" onclick="saveDemanda()">Salvar demanda</button>
     <button class="btn-del" id="btn-del" style="display:none;" onclick="deleteDemanda()">Remover demanda</button>
@@ -438,7 +679,7 @@ function showTab(id,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
-  if(id==='ceo'){renderCEO();gerarResumoPadrao();}
+  if(id==='ceo'){renderCEO();gerarResumoPadrao();}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
 }
 
 function getClientes(){
@@ -467,6 +708,15 @@ function updateMetrics(){
     <div class="mc mc-red"><div class="mc-label">Bloqueadas</div><div class="mc-val">${bloqueado}</div><div class="mc-sub">precisam de ação</div></div>
     <div class="mc"><div class="mc-label">Homologação</div><div class="mc-val">${homologacao}</div><div class="mc-sub">aguardando aprovação</div></div>
   `;
+}
+
+async function toggleCheck(demandaId, checkIdx) {
+  const d = demandas.find(x=>String(x.id)===String(demandaId));
+  if(!d||!d.checklist) return;
+  d.checklist[checkIdx].done = !d.checklist[checkIdx].done;
+  save();
+  if(window._fbReady) await window._fbSave(d);
+  populateSelects();renderConfig();renderBoard();
 }
 
 function renderBoard(){
@@ -502,6 +752,17 @@ function renderBoard(){
               <span class="card-client">${d.cliente}</span>
             </div>
             ${d.prazo?`<div class="card-date" style="margin-top:6px;font-size:10px;color:var(--cinza-text);">Previsão: ${formatDate(d.prazo)}</div>`:''}
+            ${d.checklist&&d.checklist.length?`
+            <div style="margin-top:8px;border-top:1px solid var(--cinza-border);padding-top:7px;">
+              ${d.checklist.map((c,i)=>`
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;" onclick="event.stopPropagation();toggleCheck('${d.id}',${i})">
+                <div style="width:13px;height:13px;border-radius:3px;border:1.5px solid ${c.done?'var(--verde)':'var(--cinza-border)'};background:${c.done?'var(--verde)':'transparent'};flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                  ${c.done?'<svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6.5 7,1.5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}
+                </div>
+                <span style="font-size:11px;color:var(--cinza-text);${c.done?'text-decoration:line-through;':''}">${c.text}</span>
+              </div>`).join('')}
+              <div style="font-size:10px;color:var(--cinza-text);margin-top:3px;">${d.checklist.filter(c=>c.done).length}/${d.checklist.length} concluídos</div>
+            </div>`:''}
           </div>`).join('')}
       </div>
     </div>`;
@@ -513,15 +774,26 @@ function formatDate(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}/${
 function openModal(id){
   editingId=id||null;
   const m=id?demandas.find(d=>String(d.id)===String(id)):null;
+  // Populate selects first, then set values
+  populateSelects();
   document.getElementById('modal-title').textContent=id?'Editar demanda':'Nova demanda';
   document.getElementById('f-desc').value=m?m.desc:'';
-  document.getElementById('f-cliente-val').value=m?m.cliente:'';
-  document.getElementById('f-area-val').value=m?m.area:'BI';
+  // Set cliente select value after populate
+  const fcv=document.getElementById('f-cliente-val');
+  if(fcv){
+    // Add client if not in list yet
+    if(m&&m.cliente&&!configClientes.includes(m.cliente)){
+      const opt=document.createElement('option');opt.value=m.cliente;opt.textContent=m.cliente;fcv.appendChild(opt);
+    }
+    fcv.value=m?m.cliente:(configClientes[0]||'');
+  }
+  document.getElementById('f-area-val').value=m?m.area:(configAreas[0]||'BI');
   document.getElementById('f-status-val').value=m?m.status:'backlog';
-  document.getElementById('f-resp-val').value=m?m.resp:'Leandro';
+  document.getElementById('f-resp-val').value=m?m.resp:(configResps[0]||'Leandro');
   document.getElementById('f-prazo-val').value=m?m.prazo:'';
   document.getElementById('f-conclusao-val').value=m?m.conclusao:'';
   document.getElementById('f-obs-val').value=m?m.obs:'';
+  document.getElementById('f-checklist-val').value=m&&m.checklist?m.checklist.map(c=>c.text).join('\n'):'';
   document.getElementById('btn-del').style.display=id?'block':'none';
   document.getElementById('modal-overlay').classList.add('open');
 }
@@ -529,6 +801,18 @@ function closeModal(){document.getElementById('modal-overlay').classList.remove(
 
 async function saveDemanda(){
   const desc=document.getElementById('f-desc').value.trim();if(!desc)return;
+  const checklistRaw = document.getElementById('f-checklist-val').value.trim();
+  const checklist = checklistRaw ? checklistRaw.split('\n').filter(x=>x.trim()).map(t=>({text:t.trim(),done:false})) : [];
+  // Preserve existing checklist done states when editing
+  if(editingId) {
+    const existing = demandas.find(d=>String(d.id)===String(editingId));
+    if(existing && existing.checklist) {
+      checklist.forEach(item => {
+        const prev = existing.checklist.find(p=>p.text===item.text);
+        if(prev) item.done = prev.done;
+      });
+    }
+  }
   const d={
     id:editingId||(Date.now()+'_'+Math.random().toString(36).substr(2,5)),
     desc,
@@ -539,6 +823,7 @@ async function saveDemanda(){
     prazo:document.getElementById('f-prazo-val').value,
     conclusao:document.getElementById('f-conclusao-val').value,
     obs:document.getElementById('f-obs-val').value.trim(),
+    checklist,
   };
   if(editingId){demandas=demandas.map(x=>String(x.id)===String(editingId)?d:x);}
   else{demandas.unshift(d);}
@@ -554,15 +839,36 @@ async function deleteDemanda(){
   save();closeModal();renderBoard();showNotice('Demanda removida.');
 }
 
+function getCeoFiltered(){
+  const fa=document.getElementById('ceo-filter-area');
+  const fc=document.getElementById('ceo-filter-cliente');
+  const area=fa?fa.value:'todas';
+  const cliente=fc?fc.value:'todos';
+  return demandas.filter(d=>{
+    if(area!=='todas'&&d.area!==area)return false;
+    if(cliente!=='todos'&&d.cliente!==cliente)return false;
+    return true;
+  });
+}
+
+function populateCeoFilters(){
+  const fa=document.getElementById('ceo-filter-area');
+  const fc=document.getElementById('ceo-filter-cliente');
+  if(fa){const prev=fa.value;fa.innerHTML='<option value="todas">Todas as áreas</option>'+configAreas.map(a=>`<option value="${a}">${a}</option>`).join('');if(prev)fa.value=prev;}
+  if(fc){const prev=fc.value;fc.innerHTML='<option value="todos">Todos os clientes</option>'+configClientes.map(c=>`<option value="${c}">${c}</option>`).join('');if(prev)fc.value=prev;}
+}
+
 function renderCEO(){
+  populateCeoFilters();
+  const filtered=getCeoFiltered();
   const now=new Date();
   const semana=`Semana de ${now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}`;
   document.getElementById('ceo-week').textContent=semana;
   document.getElementById('ceo-footer-date').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
 
-  const concluidas=demandas.filter(d=>d.status==='concluido');
-  const andamento=demandas.filter(d=>d.status==='andamento'||d.status==='homologacao');
-  const bloqueadas=demandas.filter(d=>d.status==='bloqueado');
+  const concluidas=filtered.filter(d=>d.status==='concluido');
+  const andamento=filtered.filter(d=>d.status==='andamento'||d.status==='homologacao');
+  const bloqueadas=filtered.filter(d=>d.status==='bloqueado');
 
   document.getElementById('ceo-metrics').innerHTML=`
     <div class="ceo-mc"><div class="ceo-mc-val" style="color:var(--verde)">${concluidas.length}</div><div class="ceo-mc-label">Entregas concluídas</div></div>
@@ -592,7 +898,7 @@ async function gerarResumoCEO(){
   const key=getKey();
   if(key){
     el.className='ai-text ai-loading';el.textContent='Gerando diagnóstico com IA...';
-    const sum=demandas.map(d=>`[${d.status}] ${d.desc} | Cliente: ${d.cliente} | Área: ${d.area} | Resp: ${d.resp}${d.obs?' | Obs: '+d.obs:''}`).join('\n');
+    const filtered=getCeoFiltered();const sum=filtered.map(d=>`[${d.status}] ${d.desc} | Cliente: ${d.cliente} | Área: ${d.area} | Resp: ${d.resp}${d.obs?' | Obs: '+d.obs:''}`).join('\n');
     try{
       const resp=await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
@@ -610,15 +916,19 @@ async function gerarResumoCEO(){
 
 function gerarResumoPadrao(el){
   el=el||document.getElementById('ai-resumo');
-  const total=demandas.length;
-  const concluidas=demandas.filter(d=>d.status==='concluido');
-  const andamento=demandas.filter(d=>d.status==='andamento');
-  const bloqueadas=demandas.filter(d=>d.status==='bloqueado');
-  const homologacao=demandas.filter(d=>d.status==='homologacao');
+  const filtered=getCeoFiltered();
+  const total=filtered.length;
+  const concluidas=filtered.filter(d=>d.status==='concluido');
+  const andamento=filtered.filter(d=>d.status==='andamento');
+  const bloqueadas=filtered.filter(d=>d.status==='bloqueado');
+  const homologacao=filtered.filter(d=>d.status==='homologacao');
   const pct=total?Math.round(concluidas.length/total*100):0;
-  const clientes=[...new Set(demandas.map(d=>d.cliente))].filter(c=>c!=='Interno');
+  const clientes=[...new Set(filtered.map(d=>d.cliente))].filter(c=>c!=='Interno');
+  const fa=document.getElementById('ceo-filter-area');
+  const fc=document.getElementById('ceo-filter-cliente');
+  const areaFiltro=fa&&fa.value!=='todas'?` (área: ${fa.value})`:'';
   
-  let texto=`Semana de ${new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})} — `;
+  let texto=`Semana de ${new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}${areaFiltro} — `;
   texto+=`O portfólio conta com ${total} demandas ativas distribuídas entre ${clientes.length} clientes e operações internas, com taxa de conclusão de ${pct}%. `;
   
   if(concluidas.length>0){
@@ -639,7 +949,7 @@ function gerarResumoPadrao(el){
     texto+=obs+'. ';
   }
   
-  const proximos=demandas.filter(d=>d.status==='andamento'&&d.prazo).sort((a,b)=>a.prazo.localeCompare(b.prazo)).slice(0,3);
+  const proximos=filtered.filter(d=>d.status==='andamento'&&d.prazo).sort((a,b)=>a.prazo.localeCompare(b.prazo)).slice(0,3);
   if(proximos.length>0){
     texto+=`Próximas entregas previstas: ${proximos.map(d=>d.desc+' ('+formatDate(d.prazo)+')').join('; ')}.`;
   }
@@ -649,6 +959,336 @@ function gerarResumoPadrao(el){
 }
 
 // INIT
+
+// ===== MINHA SEMANA =====
+function getDiaSemana(date){
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  return dias[date.getDay()];
+}
+
+function getInicioFimSemana(){
+  const hoje=new Date();
+  const dow=hoje.getDay();
+  const seg=new Date(hoje);seg.setDate(hoje.getDate()-(dow===0?6:dow-1));seg.setHours(0,0,0,0);
+  const sex=new Date(seg);sex.setDate(seg.getDate()+6);sex.setHours(23,59,59,999);
+  return{seg,sex};
+}
+
+function isAtrasado(prazo){
+  if(!prazo)return false;
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  const p=new Date(prazo+'T00:00:00');
+  return p<hoje;
+}
+
+function isHoje(prazo){
+  if(!prazo)return false;
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  const p=new Date(prazo+'T00:00:00');p.setHours(0,0,0,0);
+  return p.getTime()===hoje.getTime();
+}
+
+function isEssaSemana(prazo){
+  if(!prazo)return false;
+  const{seg,sex}=getInicioFimSemana();
+  const p=new Date(prazo+'T00:00:00');
+  return p>=seg&&p<=sex;
+}
+
+function getFraseMotivacional(concluidas, atrasadas){
+  if(atrasadas>0&&concluidas===0) return{frase:`Vamos recuperar o ritmo! Você tem ${atrasadas} demanda${atrasadas>1?'s':''} atrasada${atrasadas>1?'s':''}.`,sub:'Foco no que é urgente primeiro 💪'};
+  if(concluidas===0) return{frase:'Semana começando! O que você vai conquistar hoje?',sub:'Todo grande resultado começa com o primeiro passo 🚀'};
+  if(concluidas===1) return{frase:'Primeira entrega da semana feita!',sub:'Continue assim, o ritmo está bom ⚡'};
+  if(concluidas<=3) return{frase:`${concluidas} entregas concluídas essa semana!`,sub:'Você está entregando valor real para a equipe 🎯'};
+  if(concluidas<=6) return{frase:`Impressionante! ${concluidas} demandas concluídas.`,sub:'Semana extremamente produtiva. A equipe agradece! 🏆'};
+  return{frase:`${concluidas} entregas! Semana histórica.`,sub:'Você é uma máquina de entregas. Incrível! 🔥'};
+}
+
+async function concluirRapido(id){
+  const d=demandas.find(x=>String(x.id)===String(id));
+  if(!d)return;
+  d.status='concluido';
+  d.conclusao=new Date().toISOString().split('T')[0];
+  save();
+  if(window._fbReady) await window._fbSave(d);
+  renderBoard();
+  renderSemana();
+  showNotice('🎉 Demanda concluída! Parabéns!');
+}
+
+function renderSemana(){
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  const{seg,sex}=getInicioFimSemana();
+
+  // Pendentes (não concluídas)
+  const pendentes=demandas.filter(d=>d.status!=='concluido'&&d.prazo);
+  const atrasadas=pendentes.filter(d=>isAtrasado(d.prazo));
+  const vendemHoje=pendentes.filter(d=>isHoje(d.prazo));
+  const vendeSemana=pendentes.filter(d=>isEssaSemana(d.prazo)&&!isAtrasado(d.prazo)&&!isHoje(d.prazo));
+
+  // Concluídas essa semana
+  const concluidasSemana=demandas.filter(d=>{
+    if(d.status!=='concluido'||!d.conclusao)return false;
+    const c=new Date(d.conclusao+'T00:00:00');
+    return c>=seg&&c<=sex;
+  });
+
+  // Hero
+  document.getElementById('semana-conquistas-num').textContent=concluidasSemana.length;
+  const diaNome=hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('semana-hero-sub').textContent=diaNome.charAt(0).toUpperCase()+diaNome.slice(1);
+
+  // Frase
+  const{frase,sub}=getFraseMotivacional(concluidasSemana.length, atrasadas.length);
+  document.getElementById('frase-texto').textContent=frase;
+  document.getElementById('frase-sub').textContent=sub;
+
+  // Alertas
+  document.getElementById('count-atrasado').textContent=atrasadas.length;
+  document.getElementById('count-hoje').textContent=vendemHoje.length;
+  document.getElementById('count-semana').textContent=vendeSemana.length;
+
+  // Prioridade agora — atrasadas + hoje + semana
+  const prioridade=[...atrasadas,...vendemHoje,...vendeSemana].slice(0,8);
+  const lpEl=document.getElementById('lista-prioridade');
+  if(prioridade.length===0){
+    lpEl.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--cinza-text);font-size:13px;">🎉 Nada urgente! Você está em dia.</div>`;
+  } else {
+    lpEl.innerHTML=prioridade.map(d=>{
+      const atras=isAtrasado(d.prazo);
+      const hj=isHoje(d.prazo);
+      const cls=atras?'atrasado':hj?'hoje':'semana';
+      const prazoLabel=atras?`⚠️ Atrasado desde ${formatDate(d.prazo)}`:hj?`⏰ Vence hoje`:d.prazo?`📅 ${formatDate(d.prazo)}`:'';
+      const prazoClass=atras?'prazo-atrasado':hj?'prazo-hoje':'prazo-semana';
+      return`<div class="hoje-item ${cls}">
+        <div class="hoje-item-info">
+          <div class="hoje-item-desc">${d.desc}</div>
+          <div class="hoje-item-meta"><span class="prazo-tag ${prazoClass}">${prazoLabel}</span> · ${d.cliente} · ${d.area}</div>
+        </div>
+        <button class="btn-concluir" onclick="concluirRapido('${d.id}')">✅ Concluir</button>
+      </div>`;
+    }).join('');
+  }
+
+  // Conquistas
+  const lcEl=document.getElementById('lista-conquistas');
+  if(concluidasSemana.length===0){
+    lcEl.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--cinza-text);font-size:13px;">Suas conquistas da semana aparecerão aqui 💪</div>`;
+  } else {
+    lcEl.innerHTML=concluidasSemana.map(d=>`
+      <div class="conquista-item">
+        <div class="conquista-check">✅</div>
+        <div class="conquista-desc">${d.desc}</div>
+        <span class="conquista-cliente">${d.cliente}</span>
+      </div>`).join('');
+    lcEl.innerHTML+=`<div style="text-align:center;margin-top:10px;font-size:12px;color:var(--cinza-text);">${concluidasSemana.length} entrega${concluidasSemana.length>1?'s':''} essa semana 🎯</div>`;
+  }
+
+  // Agenda expansível
+  const agEl=document.getElementById('agenda-semana');
+  agEl.innerHTML='';
+
+  // Also include atrasadas (before seg) as first group
+  const atrasadasSemPrazo=demandas.filter(d=>d.prazo&&isAtrasado(d.prazo)&&d.status!=='concluido');
+  const diasUnicos=[...new Set(atrasadasSemPrazo.map(d=>d.prazo))].sort();
+
+  // Build days: atrasados agrupados + seg a dom
+  const diasAgenda=[];
+
+  // Atrasados agrupados num bloco único
+  if(atrasadasSemPrazo.length>0){
+    diasAgenda.push({label:'⚠️ Atrasadas',diaStr:'atrasado',isHj:false,isAtras:true,itens:atrasadasSemPrazo,autoOpen:true});
+  }
+
+  // Dias da semana
+  const diasSemana=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  for(let i=0;i<7;i++){
+    const dia=new Date(seg);dia.setDate(seg.getDate()+i);
+    const diaStr=dia.toISOString().split('T')[0];
+    const isHj=dia.getTime()===hoje.getTime();
+    const nomeDia=diasSemana[dia.getDay()];
+    const numDia=dia.getDate();
+    const mesMes=dia.toLocaleDateString('pt-BR',{month:'short'});
+    const label=`${nomeDia}, ${numDia} de ${mesMes}${isHj?' — Hoje 📍':''}`;
+    const itens=demandas.filter(d=>d.prazo===diaStr);
+    diasAgenda.push({label,diaStr,isHj,isAtras:false,itens,autoOpen:isHj});
+  }
+
+  diasAgenda.forEach((diaObj,idx)=>{
+    const pendentes=diaObj.itens.filter(d=>d.status!=='concluido');
+    const concluidos=diaObj.itens.filter(d=>d.status==='concluido');
+    const total=diaObj.itens.length;
+    const isOpen=diaObj.autoOpen||diaObj.isAtras;
+
+    let badgeClass='agenda-badge-normal';
+    let badgeText=total>0?`${pendentes.length} pendente${pendentes.length!==1?'s':''}`:'livre';
+    if(total===0){badgeClass='agenda-badge-livre';badgeText='✓ livre';}
+    else if(diaObj.isAtras){badgeClass='agenda-badge-atrasado';badgeText=`${total} atrasada${total!==1?'s':''}`;}
+    else if(diaObj.isHj){badgeClass='agenda-badge-hoje';badgeText=`${pendentes.length} hoje`;}
+
+    let diaClass='agenda-dia';
+    if(diaObj.isHj)diaClass+=' hoje-agenda';
+    if(diaObj.isAtras)diaClass+=' atrasado-agenda';
+
+    const div=document.createElement('div');
+    div.className=diaClass;
+    div.id='agenda-dia-'+idx;
+
+    div.innerHTML=`
+      <div class="agenda-dia-header" onclick="toggleAgendaDia(${idx})">
+        <div class="agenda-dia-left">
+          <span class="agenda-dia-label">${diaObj.label}</span>
+          <span class="agenda-dia-badge ${badgeClass}">${badgeText}</span>
+          ${concluidos.length>0?`<span style="font-size:11px;color:var(--verde);">✅ ${concluidos.length} concluída${concluidos.length!==1?'s':''}</span>`:''}
+        </div>
+        <span class="agenda-dia-arrow${isOpen?' open':''}" id="arrow-${idx}">▼</span>
+      </div>
+      <div class="agenda-dia-body${isOpen?' open':''}" id="body-${idx}">
+        ${diaObj.itens.length===0
+          ? `<div class="agenda-livre">🎉 Nenhuma demanda para este dia</div>`
+          : diaObj.itens.map(d=>{
+              const atras=isAtrasado(d.prazo)&&d.status!=='concluido';
+              const hj=isHoje(d.prazo)&&d.status!=='concluido';
+              const conc=d.status==='concluido';
+              let itemClass='agenda-item';
+              if(conc)itemClass+=' item-concluido';
+              else if(atras)itemClass+=' item-atrasado';
+              else if(hj)itemClass+=' item-hoje';
+              const areaTag=AREA_TAGS[d.area]||'tag-bi';
+              return`<div class="${itemClass}">
+                <div class="agenda-item-info">
+                  <div class="agenda-item-desc">${d.desc}</div>
+                  <div class="agenda-item-meta">${d.cliente} · ${d.resp}</div>
+                  <div class="agenda-item-tags">
+                    <span class="agenda-item-area tag ${areaTag}">${d.area}</span>
+                    ${d.obs?`<span style="font-size:10px;color:var(--cinza-text);font-style:italic;">${d.obs}</span>`:''}
+                  </div>
+                </div>
+                ${!conc?`<button class="btn-concluir" onclick="concluirRapido('${d.id}')">✅ Concluir</button>`
+                       :`<span style="font-size:11px;color:var(--verde);font-weight:500;">✅ Feito</span>`}
+              </div>`;
+            }).join('')
+        }
+      </div>`;
+    agEl.appendChild(div);
+  });
+}
+
+function toggleAgendaDia(idx){
+  const body=document.getElementById('body-'+idx);
+  const arrow=document.getElementById('arrow-'+idx);
+  if(!body)return;
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+// ===== FIM MINHA SEMANA =====
+
+
+// ===== AUTH =====
+async function fazerLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-senha').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  if(!email || !senha){ errEl.textContent = 'Preencha e-mail e senha.'; return; }
+  const btn = document.querySelector('.login-btn');
+  btn.textContent = 'Entrando...'; btn.disabled = true;
+  const res = await window._fbLogin(email, senha);
+  if(!res.ok){ errEl.textContent = res.msg; btn.textContent = 'Entrar'; btn.disabled = false; }
+}
+
+async function fazerLogout(){
+  if(confirm('Deseja sair do painel?')) await window._fbLogout();
+}
+// ===== FIM AUTH =====
+
+// Config data
+let configResps = JSON.parse(localStorage.getItem('copi_resps') || '["Leandro","Pamella","Elisangela"]');
+let configAreas = JSON.parse(localStorage.getItem('copi_areas') || '["BI","Controladoria","Tech","Figma","Automação"]');
+let configClientes = JSON.parse(localStorage.getItem('copi_clientes') || '["Sushi","Cavezzo","Chefona","H2 Energy","FC","Geral","Interno"]');
+
+function saveConfig() {
+  localStorage.setItem('copi_resps', JSON.stringify(configResps));
+  localStorage.setItem('copi_areas', JSON.stringify(configAreas));
+  localStorage.setItem('copi_clientes', JSON.stringify(configClientes));
+}
+
+function addConfig(type) {
+  const input = document.getElementById('new-'+type);
+  const val = input.value.trim();
+  if(!val) return;
+  if(type==='resp' && !configResps.includes(val)) configResps.push(val);
+  if(type==='area' && !configAreas.includes(val)) configAreas.push(val);
+  if(type==='cliente' && !configClientes.includes(val)) configClientes.push(val);
+  input.value='';
+  saveConfig();
+  renderConfig();
+  populateSelects();
+}
+
+function removeConfig(type, val) {
+  if(type==='resp') configResps = configResps.filter(x=>x!==val);
+  if(type==='area') configAreas = configAreas.filter(x=>x!==val);
+  if(type==='cliente') configClientes = configClientes.filter(x=>x!==val);
+  saveConfig();
+  renderConfig();
+  populateSelects();
+}
+
+function renderConfig() {
+  const tag = (type, val) => `<div style="display:flex;align-items:center;gap:4px;background:var(--cinza-light);border:1px solid var(--cinza-border);border-radius:20px;padding:4px 10px;">
+    <span style="font-size:12px;">${val}</span>
+    <span onclick="removeConfig('${type}','${val}')" style="cursor:pointer;font-size:11px;color:var(--cinza-text);margin-left:2px;">✕</span>
+  </div>`;
+  const rm = document.getElementById('resp-manager');
+  const am = document.getElementById('area-manager');
+  const cm = document.getElementById('cliente-manager');
+  if(rm) rm.innerHTML = configResps.map(v=>tag('resp',v)).join('');
+  if(am) am.innerHTML = configAreas.map(v=>tag('area',v)).join('');
+  if(cm) cm.innerHTML = configClientes.map(v=>tag('cliente',v)).join('');
+}
+
+function populateSelects() {
+  // Responsavel selects
+  ['f-resp-val'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    const prev = el.value;
+    el.innerHTML = configResps.map(r=>`<option value="${r}">${r}</option>`).join('');
+    if(configResps.includes(prev)) el.value = prev;
+  });
+  // Area selects
+  const areaEl = document.getElementById('f-area-val');
+  if(areaEl) {
+    const prev = areaEl.value;
+    areaEl.innerHTML = configAreas.map(a=>`<option value="${a}">${a}</option>`).join('');
+    if(configAreas.includes(prev)) areaEl.value = prev;
+  }
+  // Filter selects
+  const faEl = document.getElementById('f-area');
+  if(faEl) {
+    faEl.innerHTML = '<option value="todas">Todas as áreas</option>' + configAreas.map(a=>`<option value="${a}">${a}</option>`).join('');
+  }
+  const frEl = document.getElementById('f-resp');
+  if(frEl) {
+    frEl.innerHTML = '<option value="todos">Todos os responsáveis</option>' + configResps.map(r=>`<option value="${r}">${r}</option>`).join('');
+  }
+  // Cliente filter
+  const fcEl = document.getElementById('f-cliente');
+  if(fcEl) {
+    const prev = fcEl.value;
+    fcEl.innerHTML = '<option value="todos">Todos os clientes</option>' + configClientes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    if(configClientes.includes(prev)) fcEl.value = prev;
+  }
+  // Cliente modal select
+  const fcvEl = document.getElementById('f-cliente-val');
+  if(fcvEl) {
+    const prev = fcvEl.value;
+    fcvEl.innerHTML = configClientes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    if(configClientes.includes(prev)) fcvEl.value = prev;
+  }
+}
+
 document.getElementById('top-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
 
 // Firebase integration
@@ -699,5 +1339,6 @@ async function fbDeleteDemanda(id) {
   renderBoard();
 }
 </script>
+</div>
 </body>
 </html>
