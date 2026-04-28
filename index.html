@@ -442,9 +442,9 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
       <div class="ceo-title" id="ceo-titulo">Relatório Semanal de Projetos</div>
       <div class="ceo-subtitle">Gestão de Projetos &amp; Operações</div>
       <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-top:10px;">
-        <button onclick="navegarSemana(-1)" style="background:rgba(255,255,255,0.1);border:none;color:var(--preto);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;font-family:inherit;">‹</button>
+        <button onclick="navegarSemana(-1)" style="background:var(--cinza-light);border:1px solid var(--cinza-border);color:var(--preto);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:18px;font-family:inherit;line-height:1;">‹</button>
         <div class="ceo-week" id="ceo-week" style="margin:0;"></div>
-        <button onclick="navegarSemana(1)" id="btn-prox-semana" style="background:rgba(255,255,255,0.1);border:none;color:var(--preto);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;font-family:inherit;">›</button>
+        <button onclick="navegarSemana(1)" id="btn-prox-semana" style="background:var(--cinza-light);border:1px solid var(--cinza-border);color:var(--preto);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:18px;font-family:inherit;line-height:1;">›</button>
       </div>
       <div id="ceo-semana-num" style="font-size:11px;color:var(--cinza-text);margin-top:4px;"></div>
     </div>
@@ -858,13 +858,14 @@ let semanaOffset = 0;
 
 function navegarSemana(dir) {
   semanaOffset += dir;
-  // Não permite ir além da semana atual
   if(semanaOffset > 0) semanaOffset = 0;
-  // Atualiza botão próxima semana
-  document.getElementById('btn-prox-semana').style.opacity = semanaOffset === 0 ? '0.3' : '1';
-  document.getElementById('btn-prox-semana').style.pointerEvents = semanaOffset === 0 ? 'none' : 'auto';
+  const btnProx = document.getElementById('btn-prox-semana');
+  if(btnProx){
+    btnProx.style.opacity = semanaOffset === 0 ? '0.3' : '1';
+    btnProx.style.pointerEvents = semanaOffset === 0 ? 'none' : 'auto';
+  }
   renderCEO();
-  gerarResumoPadrao();
+  gerarResumoPadrao(document.getElementById('ai-resumo'));
 }
 
 function getInicioFimSemanaOffset(offset) {
@@ -931,7 +932,7 @@ function renderCEO(){
   const periodoLabel = `${inicio.toLocaleDateString('pt-BR',fmtOpts)} → ${fim.toLocaleDateString('pt-BR',fmtOpts)} de ${fim.getFullYear()}`;
   const semanaLabel = semanaOffset === 0 ? `Semana atual — ${periodoLabel}` : semanaOffset === -1 ? `Semana passada — ${periodoLabel}` : `${Math.abs(semanaOffset)} semanas atrás — ${periodoLabel}`;
   document.getElementById('ceo-week').textContent=semanaLabel;
-  document.getElementById('ceo-semana-num').textContent=`Semana ${numSemana} de ${fim.getFullYear()} · reunião terça a terça`;
+  document.getElementById('ceo-semana-num').textContent=`Semana ${numSemana} de ${fim.getFullYear()}`;
   document.getElementById('ceo-footer-date').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'});
   // Desabilita botão próxima semana se estiver na semana atual
   const btnProx = document.getElementById('btn-prox-semana');
