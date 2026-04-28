@@ -296,6 +296,13 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
       document.getElementById('user-nome').textContent = window._currentPerfil.nome;
       const av=document.getElementById('user-avatar');if(av)av.textContent=window._currentPerfil.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
       aplicarPerfil(window._currentPerfil.role);
+      // Pre-load API key into window cache
+      if(window._fbGetApiKey) {
+        window._fbGetApiKey().then(k => {
+          window._cachedApiKey = k;
+          console.log('API key loaded:', k ? 'yes' : 'no');
+        });
+      }
       window.dispatchEvent(new Event('firebase-ready'));
       // Auto gera resumo para CEO
       if(window._currentPerfil.role === 'ceo') {
