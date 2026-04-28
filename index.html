@@ -304,10 +304,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
         });
       }
       window.dispatchEvent(new Event('firebase-ready'));
-      // Auto gera resumo para CEO
-      if(window._currentPerfil.role === 'ceo') {
-        setTimeout(() => { gerarResumoPadrao(); }, 1500);
-      }
+
     } else {
       window._currentUser = null;
       window._currentPerfil = null;
@@ -1300,37 +1297,44 @@ function toggleAgendaDia(idx){
 
 // ===== PERFIS =====
 function aplicarPerfil(role) {
-  const navBtns = document.querySelectorAll('.nav-btn');
-  const metricBar = document.getElementById('metrics-bar');
-  const btnResumo = document.querySelector('.btn-resumo');
-  const ceoNavSimple = document.getElementById('ceo-nav-simple');
+  // Guarda role globalmente para usar em outros lugares
+  window._currentRole = role;
 
-  // Reset — mostra tudo primeiro
-  navBtns.forEach(b => b.style.display = '');
-  if(metricBar) metricBar.style.display = '';
-  if(btnResumo) btnResumo.style.display = 'none';
-  if(ceoNavSimple) ceoNavSimple.style.display = 'none';
+  const navBar = document.querySelector('.nav-bar');
+  const metricBar = document.getElementById('metrics-bar');
+  const ceoNavSimple = document.getElementById('ceo-nav-simple');
+  const appScreen = document.getElementById('app-screen');
 
   if(role === 'admin') {
-    // Admin vê TUDO — nada escondido
+    // Admin vê TUDO
+    if(navBar) navBar.style.display = '';
+    if(metricBar) metricBar.style.display = '';
+    if(ceoNavSimple) ceoNavSimple.style.display = 'none';
+    // Garante que Board está ativo
+    const boardBtn = document.querySelector('.nav-btn');
+    if(boardBtn) showTab('gestao', boardBtn);
     return;
   }
 
   if(role === 'ceo') {
     // CEO vê só Resumo da Empresa
-    navBtns.forEach(b => b.style.display = 'none');
+    if(navBar) navBar.style.display = 'none';
     if(metricBar) metricBar.style.display = 'none';
     if(ceoNavSimple) ceoNavSimple.style.display = 'flex';
     setTimeout(() => {
       const ceoBtn = document.querySelector('#ceo-nav-simple .nav-btn');
       showTab('ceo', ceoBtn || {classList:{add:()=>{},remove:()=>{}}});
-      renderCEO(); gerarResumoCEO();
-    }, 300);
+      renderCEO();
+      gerarResumoCEO();
+    }, 500);
     return;
   }
 
-  // Analista — Board + Minha Semana apenas
-  navBtns.forEach(b => {
+  // Analista — Board + Minha Semana, esconde Config e Resumo CEO
+  if(navBar) navBar.style.display = '';
+  if(metricBar) metricBar.style.display = '';
+  if(ceoNavSimple) ceoNavSimple.style.display = 'none';
+  document.querySelectorAll('.nav-btn').forEach(b => {
     if(b.textContent.includes('Config') || b.textContent.includes('Resumo CEO')) {
       b.style.display = 'none';
     }
@@ -1452,11 +1456,19 @@ function initFirebase() {
     if(data && data.length > 0) {
       demandas = data;
     } else {
-      // First time: push default demandas to Firebase
       demandas.forEach(d => window._fbSave(d));
     }
-    renderBoard();
-    document.getElementById('fb-dot').style.background='#2E9E6B';document.getElementById('fb-label').textContent='Sincronizado';
+    // Só renderiza board se não for CEO
+    const role = window._currentPerfil ? window._currentPerfil.role : 'admin';
+    if(role !== 'ceo') {
+      renderBoard();
+    } else {
+      // CEO: atualiza resumo em tempo real
+      renderCEO();
+      gerarResumoCEO();
+    }
+    document.getElementById('fb-dot').style.background='#2E9E6B';
+    document.getElementById('fb-label').textContent='Sincronizado';
   });
 }
 
@@ -1464,7 +1476,6 @@ if(window._fbReady) {
   initFirebase();
 } else {
   window.addEventListener('firebase-ready', initFirebase);
-  // Fallback: render from localStorage while waiting
   renderBoard();
 }
 
