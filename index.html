@@ -297,6 +297,10 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
       const av=document.getElementById('user-avatar');if(av)av.textContent=window._currentPerfil.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
       aplicarPerfil(window._currentPerfil.role);
       window.dispatchEvent(new Event('firebase-ready'));
+      // Auto gera resumo para CEO
+      if(window._currentPerfil.role === 'ceo') {
+        setTimeout(() => { gerarResumoPadrao(); }, 1500);
+      }
     } else {
       window._currentUser = null;
       window._currentPerfil = null;
@@ -384,7 +388,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   <div class="topbar-right">
     <div class="user-chip" title="Sair" onclick="fazerLogout()"><div class="user-avatar" id="user-avatar">L</div><span class="user-nome" id="user-nome">...</span><button class="logout-btn">↩</button></div>
     <span id="fb-status" style="font-size:11px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px;"><span id="fb-dot" style="width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;"></span><span id="fb-label">Conectando...</span></span><span class="top-date" id="top-date"></span>
-    <button class="btn-resumo" onclick="showTab('ceo',document.querySelectorAll('.nav-btn')[1]);gerarResumoCEO()">Resumo CEO ↗</button>
+    
   </div>
 </div>
 
@@ -449,8 +453,8 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
     </div>
     <div class="ai-resumo-box">
       <div class="ai-resumo-head">
-        <span>Diagnóstico IA</span>
-        <div style="display:flex;gap:8px;align-items:center;">
+        <span>Diagnóstico da semana</span>
+        <div id="ai-admin-controls" style="display:flex;gap:8px;align-items:center;">
           <span class="ai-badge">Claude</span>
           <button class="btn-gerar" onclick="gerarResumoCEO()">Atualizar ↗</button>
         </div>
@@ -684,7 +688,7 @@ function showTab(id,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
-  if(id==='ceo'){renderCEO();gerarResumoPadrao();}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
+  if(id==='ceo'){renderCEO();gerarResumoPadrao(document.getElementById('ai-resumo'));}if(id==='config'){renderConfig();}if(id==='semana'){renderSemana();}
 }
 
 function getClientes(){
@@ -1214,19 +1218,23 @@ function aplicarPerfil(role) {
     navBtns.forEach(b => b.style.display = 'none');
     if(metricBar) metricBar.style.display = 'none';
     if(btnResumo) btnResumo.style.display = 'none';
+    const aiCtrl = document.getElementById('ai-admin-controls');
+    if(aiCtrl) aiCtrl.style.display = 'none';
     // Auto open CEO tab
     setTimeout(() => {
       const ceoBtn = document.querySelector('[onclick*="ceo"]');
       if(ceoBtn) { ceoBtn.style.display = 'block'; showTab('ceo', ceoBtn); }
       else { showTab('ceo', {classList:{add:()=>{},remove:()=>{}}}); }
       renderCEO(); gerarResumoPadrao();
-    }, 100);
+    }, 300);
     // Show simple CEO nav
     document.getElementById('ceo-nav-simple').style.display = 'flex';
   } else if(role === 'admin') {
     // Admin vê tudo
     document.getElementById('ceo-nav-simple').style.display = 'none';
     if(btnResumo) btnResumo.style.display = '';
+    const aiCtrl = document.getElementById('ai-admin-controls');
+    if(aiCtrl) aiCtrl.style.display = 'flex';
   } else {
     // Analista — Board + Minha Semana, sem Config e sem Resumo CEO
     document.getElementById('ceo-nav-simple').style.display = 'none';
