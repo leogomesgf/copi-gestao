@@ -137,12 +137,12 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 .ceo-item-text{font-size:13px;color:var(--preto);flex:1;line-height:1.5;}
 .ceo-item-client{font-size:11px;font-weight:600;color:var(--laranja);background:var(--laranja-light);padding:2px 8px;border-radius:20px;white-space:nowrap;}
 .ceo-item-bloq{font-size:11px;color:var(--vermelho);font-style:italic;}
-.ai-resumo-box{background:var(--preto);border-radius:12px;padding:1.25rem;margin-bottom:12px;}
-.ai-resumo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ai-resumo-head span{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--branco);}
+.ai-resumo-box{background:linear-gradient(135deg,#0E3A5C 0%,#1a5a8a 100%);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:16px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 4px 24px rgba(14,58,92,0.3);}
+.ai-resumo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ai-resumo-head span:first-child{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#fff;letter-spacing:0.02em;}
 .ai-badge{font-size:10px;background:var(--laranja);color:var(--branco);padding:3px 8px;border-radius:20px;font-family:'Sora',sans-serif;}
-.ai-text{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;min-height:48px;}
-.ai-loading{font-style:italic;color:rgba(255,255,255,0.4);}
+.ai-text{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.8;min-height:48px;font-weight:400;}
+.ai-loading{font-style:italic;color:rgba(255,255,255,0.4);font-size:13px;}
 .ceo-footer{text-align:center;padding:1.5rem 0;font-size:12px;color:var(--cinza-text);}
 .btn-gerar{background:var(--laranja);color:var(--branco);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;}
 .btn-gerar:hover{background:var(--laranja-dark);}
@@ -260,7 +260,7 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -331,11 +331,12 @@ h1,h2,h3,.logo-text{font-family:'Sora',sans-serif;}
   // Busca chave da API do Firestore
   window._fbGetApiKey = async function() {
     try {
-      const snap = await getDocs(collection(db, 'config'));
-      let key = '';
-      snap.forEach(d => { if(d.id === 'api' && d.data().anthropic_key) key = d.data().anthropic_key; });
-      return key;
-    } catch(e) { return ''; }
+      const docSnap = await getDoc(doc(db, 'config', 'api'));
+      if(docSnap.exists() && docSnap.data().anthropic_key) {
+        return docSnap.data().anthropic_key;
+      }
+      return '';
+    } catch(e) { console.error('API key fetch error:', e); return ''; }
   };
 
   // Expose DB functions globally
@@ -1012,6 +1013,8 @@ async function gerarResumoCEO(){
     }catch(e){}
   }
   gerarResumoPadrao(el);
+  const bf=document.getElementById('ai-status-badge');
+  if(bf){bf.textContent='automático';bf.style.color='rgba(255,255,255,0.3)';}
 }
 
 function gerarResumoPadrao(el){
